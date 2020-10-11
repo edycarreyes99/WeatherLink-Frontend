@@ -27,5 +27,12 @@
   "bugs": {
     "url": "https://github.com/edycarreyes99/WeatherLink-Frontend/issues"
   },
-  "homepage": "https://github.com/edycarreyes99/WeatherLink-Frontend#readme"
+  "homepage": "https://github.com/edycarreyes99/WeatherLink-Frontend#readme",
+  "dependencies": {
+    "@googlemaps/google-maps-services-js": "^3.1.13",
+    "axios": "^0.20.0"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0"
+  }
 }

@@ -1,0 +1,31 @@
+{
+  "name": "weatherlink",
+  "version": "1.0.0",
+  "description": "Sistema de monitoreo ambiental personalizado.",
+  "main": "src/js/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edycarreyes99/WeatherLink-Frontend.git"
+  },
+  "keywords": [
+    "weather",
+    "clima",
+    "medio-ambiente",
+    "sistema",
+    "monitoreo",
+    "html",
+    "css",
+    "javascript",
+    "npm",
+    "yarn"
+  ],
+  "author": "Edycar Reyes",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/edycarreyes99/WeatherLink-Frontend/issues"
+  },
+  "homepage": "https://github.com/edycarreyes99/WeatherLink-Frontend#readme"
+}

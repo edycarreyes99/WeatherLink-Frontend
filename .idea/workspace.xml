@@ -2,10 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0224f981-6350-4b0a-9406-e8c275c6f98a" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/assets/img/custom-icons/rain.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/img/custom-icons/temperature.svg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/img/logo.svg" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/img/logo.svg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpack.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/webpack.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/scss/dashboard.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/scss/dashboard.scss" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,7 +75,7 @@
       <updated>1602395695470</updated>
       <workItem from="1602395696666" duration="2262000" />
       <workItem from="1602397961051" duration="833000" />
-      <workItem from="1602446591327" duration="20086000" />
+      <workItem from="1602446591327" duration="27993000" />
     </task>
     <servers />
   </component>

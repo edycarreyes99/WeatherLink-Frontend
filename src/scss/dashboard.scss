@@ -1,3 +1,44 @@
 .dashboard-page {
+  .titulo-dashboard {
+    border-left-style: solid;
+    border-left-color: #6EB15B;
+    border-left-width: 5px;
+  }
 
+  .top-container {
+    min-height: 57%;
+    max-height: 57%;
+  }
+
+  .bottom-container {
+    height: 30%;
+  }
+
+  #lista-KPI {
+    min-height: 57%;
+    max-height: 57%;
+    top: 0;
+    bottom: 0;
+
+    .KPI-Card {
+      max-width: 22rem;
+    }
+
+    .card-rain-icon, .card-temperature-icon {
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+  #mapa {
+    height: 57%;
+  }
+
+  #grafico-temperatura {
+    height: 30%;
+  }
+
+  #grafico-humedad {
+    height: 30%;
+  }
 }

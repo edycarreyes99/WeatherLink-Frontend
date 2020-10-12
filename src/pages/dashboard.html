@@ -11,16 +11,70 @@
     />
     <link rel="apple-touch-icon" href="../logo192.png"/>
     <link rel="manifest" href="../manifest.json"/>
-    <link rel="stylesheet" href="../scss/styles.scss">
-    <title>Login - WeatherLink</title>
+    <title>Dashboard - WeatherLink</title>
 </head>
-<body>
-<noscript>Se necesita habilitar JavaScript en su navegador para poder correr esta aplicación.</noscript>
-<div class="container dashboard-page">
-    <main id="main" role="main">
-        Index Works!
-    </main>
-</div>
-<script type="text/javascript" src="js/index.js"></script>
+
+<!-- Body de la pagina -->
+<body class="p-0 m-0">
+<!-- En caso de que el navegador tenga deshabilitado javascript se muestra el siguiente mensaje -->
+<noscript>
+    Se necesita habilitar JavaScript en su navegador para poder correr esta aplicación.
+</noscript>
+
+<!-- Seccion Main -->
+<main id="main" role="main" class="dashboard-page vh-100 vw-100">
+    <div class="vw-100 vh-100">
+        <div class="p-4">
+            <div class="titulo-dashboard">
+                <h3 class="ml-3 text-dark">
+                    Administración de Estaciones Climáticas
+                </h3>
+                <h5 class="ml-3 text-secondary">
+                    Estaciones de Clima
+                </h5>
+            </div>
+        </div>
+        <div class="bg-danger top-container">
+            <div class="row">
+                <div class="col-3 bg-secondary" id="lista-KPI">
+                    <ol style="overflow: auto;">
+                        <li>
+                            <div class="shadow bg-light rounded mx-auto KPI-Card p-3 mt-3">
+                                <div class="titulo-dashboard mb-3"><h5 class="ml-3 text-dark">Estacion 1</h5></div>
+                                <div class="row">
+                                    <div class="col-6 d-flex">
+                                        <div class="d-flex justify-content-center align-items-center"><img
+                                                src="../assets/img/custom-icons/rain.svg" alt="Rain Icon"
+                                                class="card-rain-icon"></div>
+                                        <div class="d-block"><h5 class="text-dark d-block font-weight-bold ml-2 mb-0">
+                                            56%</h5>
+                                            <span class="text-dark d-block ml-2">Humedad</span></div>
+                                    </div>
+                                    <div class="col-6 d-flex">
+                                        <div class="d-flex justify-content-center align-items-center"><img
+                                                src="../assets/img/custom-icons/temperature.svg" alt="Temperature Icon"
+                                                class="card-temperature-icon"></div>
+                                        <div class="d-block"><h5 class="text-dark d-block font-weight-bold ml-2 mb-0">34
+                                            C°</h5>
+                                            <span class="text-dark d-block ml-2">Temperatura</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+                <div class="col-9 bg-success" id="mapa"></div>
+            </div>
+        </div>
+        <div class="bg-warning bottom-container p-4">
+            <div class="row">
+                <div class="col-6" id="grafico-temperatura"></div>
+                <div class="col-6" id="grafico-humedad"></div>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- End main-->
 </body>
+<!-- End body -->
 </html>

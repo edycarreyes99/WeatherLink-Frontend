@@ -4,8 +4,6 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const webpack = require("webpack");
 
-const ASSET_PATH = process.env.ASSET_PATH || 'assets/';
-
 module.exports = {
     entry: './src/js/index.js',
     output: {
@@ -14,6 +12,7 @@ module.exports = {
     },
     plugins: [
         new HTMlWebpackPlugin({
+            title: "Login - WeatherLink",
             filename: "index.html",
             template: "./src/index.html"
         }),
@@ -34,9 +33,11 @@ module.exports = {
             $: 'jquery',
             jQuery: 'jquery'
         }),
-        new webpack.DefinePlugin({
-            'process.env.ASSET_PATH': JSON.stringify(ASSET_PATH),
-        }),
+        new HTMlWebpackPlugin({
+            title: "Dashboard - WeatherLink",
+            filename: "dashboard.html",
+            template: "./src/pages/dashboard.html"
+        })
     ],
     module: {
         rules: [

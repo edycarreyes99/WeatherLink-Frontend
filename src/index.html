@@ -11,16 +11,26 @@
     />
     <link rel="apple-touch-icon" href="logo192.png"/>
     <link rel="manifest" href="manifest.json"/>
-    <link rel="stylesheet" href="css/styles.css">
     <title>WeatherLink</title>
 </head>
 <body>
 <noscript>Se necesita habilitar JavaScript en su navegador para poder correr esta aplicación.</noscript>
-<div class="container index-page">
-    <main id="main" role="main">
-        Index Works!
-    </main>
-</div>
-<script type="text/javascript" src="js/index.js"></script>
+<main id="main" role="main" class="index-page vh-100 vw-100 p-0 m-0">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-4 bg-navy vh-100 d-flex justify-content-center align-items-center text-light">
+                <div class="container-fluid">
+                    <img src="./assets/img/logo.svg" alt="WeatherLink Logo" class="w-50 d-block mx-auto">
+                    <span class="text-light text-center mx-auto align-items-center justify-content-center">
+                        WeatherLink
+                    </span>
+                </div>
+            </div>
+            <div class="col-8 bg-light vh-100">
+                Login form
+            </div>
+        </div>
+    </div>
+</main>
 </body>
 </html>

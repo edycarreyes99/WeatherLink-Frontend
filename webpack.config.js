@@ -10,7 +10,6 @@ module.exports = {
     entry: './src/js/index.js',
     output: {
         filename: 'bundle.js',
-        publicPath: ASSET_PATH,
         path: path.resolve(__dirname, 'dist')
     },
     plugins: [
@@ -34,7 +33,10 @@ module.exports = {
         new webpack.ProvidePlugin({
             $: 'jquery',
             jQuery: 'jquery'
-        })
+        }),
+        new webpack.DefinePlugin({
+            'process.env.ASSET_PATH': JSON.stringify(ASSET_PATH),
+        }),
     ],
     module: {
         rules: [

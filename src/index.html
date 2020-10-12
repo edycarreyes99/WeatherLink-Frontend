@@ -13,24 +13,80 @@
     <link rel="manifest" href="manifest.json"/>
     <title>WeatherLink</title>
 </head>
+
+<!-- Body de la pagina -->
 <body>
+<!-- En caso de que el navegador tenga deshabilitado javascript se muestra el siguiente mensaje -->
 <noscript>Se necesita habilitar JavaScript en su navegador para poder correr esta aplicación.</noscript>
+
+<!-- Seccion Main -->
 <main id="main" role="main" class="index-page vh-100 vw-100 p-0 m-0">
+
+    <!-- Container-Fluid padre -->
     <div class="container-fluid">
+
+        <!-- Sistema de columnas Row -->
         <div class="row">
+
+            <!-- Columna de 4 espacios sin breakpoints -->
             <div class="col-4 bg-navy vh-100 d-flex justify-content-center align-items-center text-light">
                 <div class="container-fluid">
                     <img src="./assets/img/logo.svg" alt="WeatherLink Logo" class="w-50 d-block mx-auto">
-                    <span class="text-light text-center mx-auto align-items-center justify-content-center">
+                    <h1 class="text-light text-center mx-auto align-items-center justify-content-center d-flex mt-4 display-4">
                         WeatherLink
-                    </span>
+                    </h1>
                 </div>
             </div>
-            <div class="col-8 bg-light vh-100">
-                Login form
+            <!-- End Col-4 -->
+
+            <!-- Columna de 8 espacios sin breakpoints -->
+            <div class="col-8 vh-100 d-flex justify-content-center align-items-center custom-bg-light">
+                <!-- Tarjeda con shadow para el login-form -->
+                <div class="shadow-lg p-3 mb-5 bg-light rounded w-50 p-5">
+                    <h6 class="float-left text-secondary">
+                        ¡Bienvenido a WeatherLink!
+                    </h6>
+                    <h1 class="display-4 float-left text-dark mb-5">
+                        Inicia sesión con tu cuenta.
+                    </h1>
+
+                    <!-- Login form -->
+                    <form>
+                        <!-- Email input -->
+                        <div class="form-group">
+                            <label for="emailLabel" class="text-dark">Correo electrónico</label>
+                            <input type="email" class="form-control" id="emailLabel" aria-describedby="emailHelp"
+                                   placeholder="Ingresa tu correo electrónico">
+                            <small id="emailHelp" class="form-text text-muted">Ejemplo: edycarreyes@gmail.com</small>
+                        </div>
+                        <!-- End Email input -->
+
+                        <!-- Password Input -->
+                        <div class="form-group">
+                            <label for="passwordLabel" class="text-dark">Contraseña</label>
+                            <input type="password" class="form-control" id="passwordLabel"
+                                   placeholder="Ingresa tu contraseña" aria-describedby="passwordHelp">
+                            <small id="passwordHelp" class="form-text text-muted">Ejemplo: 123456</small>
+                        </div>
+                        <!-- End Password Input -->
+
+                        <!-- Ingresar btn -->
+                        <button type="submit" class="btn btn-primary">
+                            Iniciar sesión
+                        </button>
+                        <!-- End Ingresar btn -->
+                    </form>
+                    <!-- End Login form -->
+                </div>
+                <!-- End Shadow -->
             </div>
+            <!-- End Col-8 -->
         </div>
+        <!-- End Row -->
     </div>
+    <!-- End Container-Fluid -->
 </main>
+<!-- End main-->
 </body>
+<!-- End body -->
 </html>

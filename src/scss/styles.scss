@@ -1,0 +1,11 @@
+@import "~bootstrap/scss/bootstrap";
+@import "dashboard";
+@import "_colors";
+@import "_fonts";
+
+
+.index-page {
+  .bg-navy {
+    background-color: $color-blue-navy;
+  }
+}

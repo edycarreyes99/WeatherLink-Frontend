@@ -1,4 +1,23 @@
 .dashboard-page {
+
+  ::-webkit-scrollbar {
+    -webkit-appearance: none
+  }
+
+  ::-webkit-scrollbar:vertical {
+    width: 8px
+  }
+
+  ::-webkit-scrollbar:horizontal {
+    height: 10px
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--black-transparent-20, rgba(0, 0, 0, 0.2));
+    -webkit-border-radius: 4px;
+    border-radius: 4px
+  }
+
   .titulo-dashboard {
     border-left-style: solid;
     border-left-color: #6EB15B;
@@ -15,10 +34,14 @@
   }
 
   #lista-KPI {
-    min-height: 57%;
-    max-height: 57%;
-    top: 0;
-    bottom: 0;
+    height: 57vh !important;
+    overflow: scroll !important;
+    overflow-x: hidden;
+    background-color: #EFEFEF !important;
+
+    ol {
+      list-style-type: none;
+    }
 
     .KPI-Card {
       max-width: 22rem;

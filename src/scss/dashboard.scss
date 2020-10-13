@@ -1,21 +1,21 @@
 .dashboard-page {
 
   ::-webkit-scrollbar {
-    -webkit-appearance: none
+    -webkit-appearance: none !important;
   }
 
   ::-webkit-scrollbar:vertical {
-    width: 8px
+    width: 8px !important;
   }
 
   ::-webkit-scrollbar:horizontal {
-    height: 10px
+    height: 10px !important;
   }
 
   ::-webkit-scrollbar-thumb {
-    background-color: var(--black-transparent-20, rgba(0, 0, 0, 0.2));
-    -webkit-border-radius: 4px;
-    border-radius: 4px
+    background-color: var(--black-transparent-20, rgba(0, 0, 0, 0.2)) !important;
+    -webkit-border-radius: 4px !important;
+    border-radius: 4px !important;
   }
 
   .titulo-dashboard {
@@ -38,13 +38,11 @@
     overflow: scroll !important;
     overflow-x: hidden;
     background-color: #EFEFEF !important;
-
-    ol {
-      list-style-type: none;
-    }
+    list-style-type: none;
+    padding: 2rem !important;
 
     .KPI-Card {
-      max-width: 22rem;
+      max-width: 24rem;
     }
 
     .card-rain-icon, .card-temperature-icon {
@@ -54,14 +52,73 @@
   }
 
   #mapa {
-    height: 57%;
+    height: 57vh;
+    max-width: 75.4vw !important;
+  }
+
+  // Estilos para el selector del tipo del mapa
+  #mapa > div > div > div.gmnoprint.gm-style-mtc > div:nth-child(1) {
+    background-color: #009DEB !important;
+    background-image: url("../assets/img/custom-icons/angle-double-down.svg");
+    background-position: right 1rem center;
+    background-repeat: no-repeat;
+    background-size: 12px;
+    color: white !important;
+
+    img {
+      display: none;
+    }
+  }
+
+  // Estilos para el dropdown del selector del estilo del mapa
+  #mapa > div > div > div.gmnoprint.gm-style-mtc > div:nth-child(2) {
+    div {
+      background-color: #009DEB !important;
+      color: white !important;
+    }
+  }
+
+  // Estilos para el contenedor de los botones de zoom del mapa
+  #mapa > div > div > div.gmnoprint.gm-bundled-control.gm-bundled-control-on-bottom > div > div {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  // Estilos generales para los 2 botones de zom-in (+) y zoom-out (-) del mapa
+  #mapa > div > div > div.gmnoprint.gm-bundled-control.gm-bundled-control-on-bottom > div > div > button:nth-child(1), #mapa > div > div > div.gmnoprint.gm-bundled-control.gm-bundled-control-on-bottom > div > div > button:nth-child(3) {
+    background-color: #009DEB !important;
+    background-repeat: no-repeat !important;
+    background-size: 18px !important;
+    background-position: center !important;
+
+    img {
+      display: none;
+    }
+  }
+
+  // Estilos para el boton de zoom-in del mapa (+)
+  #mapa > div > div > div.gmnoprint.gm-bundled-control.gm-bundled-control-on-bottom > div > div > button:nth-child(1) {
+    background-image: url("../assets/img/custom-icons/plus.svg") !important;
+  }
+
+  // Estilos para el boton de zoom-out del mapa (-)
+  #mapa > div > div > div.gmnoprint.gm-bundled-control.gm-bundled-control-on-bottom > div > div > button:nth-child(3) {
+    margin-top: 0.5rem !important;
+    margin-bottom: 0.5rem !important;
+    background-image: url("../assets/img/custom-icons/minus.svg") !important;
+  }
+
+  // Estilos para el logotipo de google en el mapa y su informacion
+  #mapa > div > div > div:nth-child(3), #mapa > div > div > div:nth-child(12), #mapa > div > div > div:nth-child(5), #mapa > div > div > div.gmnoprint.gm-style-cc {
+    display: none;
   }
 
   #grafico-temperatura {
-    height: 30%;
+    height: 100%;
   }
 
   #grafico-humedad {
-    height: 30%;
+    height: 100%;
   }
 }

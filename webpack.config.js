@@ -3,18 +3,26 @@ const HTMlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const webpack = require("webpack");
+const dotenv = require("dotenv");
 
 module.exports = {
-    entry: './src/js/index.js',
+    entry: {
+        main: "./src/js/index.js",
+        dashboard: "./src/js/dashboard.js"
+    },
     output: {
-        filename: 'bundle.js',
-        path: path.resolve(__dirname, 'dist')
+        filename: '[name].bundle.js',
+        publicPath: "/",
+        path: path.resolve(__dirname, 'dist'),
+        chunkFilename: '[id].bundle_[chunkhash].js',
+        sourceMapFilename: '[file].map'
     },
     plugins: [
         new HTMlWebpackPlugin({
             title: "Login - WeatherLink",
             filename: "index.html",
-            template: "./src/index.html"
+            template: "./src/index.html",
+            chunks: ['main']
         }),
         new CopyWebpackPlugin({
             patterns: [
@@ -36,7 +44,11 @@ module.exports = {
         new HTMlWebpackPlugin({
             title: "Dashboard - WeatherLink",
             filename: "dashboard.html",
-            template: "./src/pages/dashboard.html"
+            template: "./src/pages/dashboard.html",
+            chunks: ['dashboard']
+        }),
+        new webpack.DefinePlugin({
+            'process.env': JSON.stringify(dotenv.config().parsed)
         })
     ],
     module: {
@@ -85,5 +97,5 @@ module.exports = {
                 ]
             }
         ],
-    }
+    },
 };

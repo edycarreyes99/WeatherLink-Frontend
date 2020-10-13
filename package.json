@@ -31,9 +31,9 @@
   },
   "homepage": "https://github.com/edycarreyes99/WeatherLink-Frontend#readme",
   "dependencies": {
-    "@googlemaps/google-maps-services-js": "^3.1.13",
     "axios": "^0.20.0",
     "bootstrap": "^4.5.2",
+    "highcharts": "^8.2.0",
     "jquery": "^3.5.1",
     "popper.js": "^1.16.1"
   },

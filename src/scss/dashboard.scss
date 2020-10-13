@@ -1,21 +1,21 @@
 .dashboard-page {
 
   ::-webkit-scrollbar {
-    -webkit-appearance: none
+    -webkit-appearance: none !important;
   }
 
   ::-webkit-scrollbar:vertical {
-    width: 8px
+    width: 8px !important;
   }
 
   ::-webkit-scrollbar:horizontal {
-    height: 10px
+    height: 10px !important;
   }
 
   ::-webkit-scrollbar-thumb {
-    background-color: var(--black-transparent-20, rgba(0, 0, 0, 0.2));
-    -webkit-border-radius: 4px;
-    border-radius: 4px
+    background-color: var(--black-transparent-20, rgba(0, 0, 0, 0.2)) !important;
+    -webkit-border-radius: 4px !important;
+    border-radius: 4px !important;
   }
 
   .titulo-dashboard {
@@ -38,13 +38,11 @@
     overflow: scroll !important;
     overflow-x: hidden;
     background-color: #EFEFEF !important;
-
-    ol {
-      list-style-type: none;
-    }
+    list-style-type: none;
+    padding: 2rem !important;
 
     .KPI-Card {
-      max-width: 22rem;
+      max-width: 24rem;
     }
 
     .card-rain-icon, .card-temperature-icon {
@@ -54,14 +52,15 @@
   }
 
   #mapa {
-    height: 57%;
+    height: 57vh;
+    max-width: 75.4vw !important;
   }
 
   #grafico-temperatura {
-    height: 30%;
+    height: 100%;
   }
 
   #grafico-humedad {
-    height: 30%;
+    height: 100%;
   }
 }

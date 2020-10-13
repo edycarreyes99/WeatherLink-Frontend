@@ -2,9 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0224f981-6350-4b0a-9406-e8c275c6f98a" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.env.example" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/js/dashboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/WeatherLink.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/WeatherLink.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/watcherTasks.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/watcherTasks.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/scss/dashboard.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/scss/dashboard.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/scss/index.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/scss/index.css.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/scss/styles.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/webpack.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/webpack.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,8 +26,8 @@
       <list>
         <option value="HTML File" />
         <option value="CSS File" />
-        <option value="JavaScript File" />
         <option value="SCSS File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -71,7 +81,8 @@
       <updated>1602395695470</updated>
       <workItem from="1602395696666" duration="2262000" />
       <workItem from="1602397961051" duration="833000" />
-      <workItem from="1602446591327" duration="29503000" />
+      <workItem from="1602446591327" duration="29745000" />
+      <workItem from="1602538397686" duration="15040000" />
     </task>
     <servers />
   </component>
@@ -99,9 +110,13 @@
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="737" y="349" width="424" height="491" key="FileChooserDialogImpl/0.27.1920.1053@0.27.1920.1053" timestamp="1602452815631" />
-    <state x="464" y="188" width="992" height="737" key="SettingsEditor" timestamp="1602452873590">
+    <state x="464" y="188" width="992" height="737" key="SettingsEditor" timestamp="1602542488455">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state x="464" y="188" width="992" height="737" key="SettingsEditor/0.27.1920.1053@0.27.1920.1053" timestamp="1602452873590" />
+    <state x="464" y="188" width="992" height="737" key="SettingsEditor/0.27.1920.1053@0.27.1920.1053" timestamp="1602542488455" />
+    <state x="623" y="259" width="672" height="678" key="search.everywhere.popup" timestamp="1602552238664">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="623" y="259" width="672" height="678" key="search.everywhere.popup/0.27.1920.1053@0.27.1920.1053" timestamp="1602552238664" />
   </component>
 </project>

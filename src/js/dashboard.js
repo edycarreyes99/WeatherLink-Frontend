@@ -19,10 +19,36 @@ window.initMap = function () {
         document.getElementById('mapa'),
         {
             center: nicaraguaGeoPoints,
-            zoom: 8
+            zoom: 8,
+            streetViewControl: false,
+            rotateControl: false,
+            fullscreenControl: false,
+            mapTypeControl: true,
+            mapTypeControlOptions: {
+                style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+                position: google.maps.ControlPosition.TOP_RIGHT,
+            },
+            motionTrackingControl: true,
+            scaleControl: true,
         }
     )
+
+    let marker = new google.maps.Marker({
+        map: map,
+        icon: "../assets/img/customPin.png",
+        name: "Nueva Estacion"
+    });
+
+    let rightClickEvent = google.maps.event.addListener(map, "rightclick", function (event) {
+        map.setCenter(event.latLng);
+        marker.setPosition(event.latLng);
+        infowindow.setContent("Latitude: " + event.latLng.lat() +
+            "<br>" + "Longitude: " + event.latLng.lng());
+        infowindow.open(map, marker);
+    });
+
 };
+
 
 // Se inicializa el grafico para la temperatura
 Highcharts.chart('grafico-temperatura', {

@@ -109,9 +109,10 @@
     background-image: url("../assets/img/custom-icons/minus.svg") !important;
   }
 
-  // Estilos para el logotipo de google en el mapa y su informacion
-  #mapa > div > div > div:nth-child(3), #mapa > div > div > div:nth-child(12), #mapa > div > div > div:nth-child(5), #mapa > div > div > div.gmnoprint.gm-style-cc {
-    display: none;
+  // Estilos para el boton de ubicacion actual
+  #you_location_img {
+    background-image: url("../assets/img/custom-icons/location-arrow.svg") !important;
+    background-repeat: no-repeat !important;
   }
 
   #grafico-temperatura {

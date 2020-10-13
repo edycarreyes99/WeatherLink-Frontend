@@ -35,9 +35,12 @@ window.initMap = function () {
 
     let marker = new google.maps.Marker({
         map: map,
+        animation: google.maps.Animation.DROP,
         icon: "../assets/img/customPin.png",
         name: "Nueva Estacion"
     });
+
+    addCurrentLocationButton(map, marker);
 
     let rightClickEvent = google.maps.event.addListener(map, "rightclick", function (event) {
         map.setCenter(event.latLng);
@@ -205,3 +208,58 @@ Highcharts.chart('grafico-humedad', {
 // Se añade el script creado dinamicamente al dashboard.js
 document.head.appendChild(scriptTag);
 
+// Metodo para agregar el boton de 'My current location'
+function addCurrentLocationButton(map, marker) {
+    var controlDiv = document.createElement('div');
+
+    var firstChild = document.createElement('button');
+    firstChild.style.backgroundColor = '#009DEB';
+    firstChild.style.border = 'none';
+    firstChild.style.outline = 'none';
+    firstChild.style.width = '40px';
+    firstChild.style.height = '40px';
+    firstChild.style.borderRadius = '2px';
+    firstChild.style.boxShadow = '0 1px 4px rgba(0,0,0,0.3)';
+    firstChild.style.cursor = 'pointer';
+    firstChild.style.marginRight = '10px';
+    firstChild.style.padding = '0px';
+    firstChild.title = 'Mi ubicación';
+    controlDiv.appendChild(firstChild);
+
+    var secondChild = document.createElement('div');
+    secondChild.style.margin = '5px';
+    secondChild.style.height = '18px';
+    secondChild.style.backgroundSize = '18px 18px';
+    secondChild.style.backgroundPosition = 'center';
+    secondChild.style.backgroundRepeat = 'no-repeat';
+    secondChild.id = 'you_location_img';
+    firstChild.appendChild(secondChild);
+
+    google.maps.event.addListener(map, 'dragend', function () {
+        $('#you_location_img').css('background-position', 'center');
+    });
+
+    firstChild.addEventListener('click', function () {
+        var imgX = '0';
+        var animationInterval = setInterval(function () {
+            if (imgX === '-18') imgX = '0';
+            else imgX = '-18';
+            $('#you_location_img').css('background-position', imgX + 'center');
+        }, 500);
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                marker.setPosition(latlng);
+                map.setCenter(latlng);
+                clearInterval(animationInterval);
+                $('#you_location_img').css('background-position', '-144px 0px');
+            });
+        } else {
+            clearInterval(animationInterval);
+            $('#you_location_img').css('background-position', '0px 0px');
+        }
+    });
+
+    controlDiv.index = 1;
+    map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(controlDiv);
+}

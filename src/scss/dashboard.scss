@@ -13,14 +13,14 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background-color: var(--black-transparent-20, rgba(0, 0, 0, 0.2)) !important;
+    background-color: var(--black-transparent-20, $dark-grey) !important;
     -webkit-border-radius: 4px !important;
     border-radius: 4px !important;
   }
 
   .titulo-dashboard {
     border-left-style: solid;
-    border-left-color: #6EB15B;
+    border-left-color: $light-green;
     border-left-width: 5px;
   }
 
@@ -37,7 +37,7 @@
     height: 57vh !important;
     overflow: scroll !important;
     overflow-x: hidden;
-    background-color: #EFEFEF !important;
+    background-color: $light-grey !important;
     list-style-type: none;
     padding: 2rem !important;
 
@@ -57,13 +57,14 @@
   }
 
   // Estilos para el selector del tipo del mapa
-  #mapa > div > div > div.gmnoprint.gm-style-mtc > div:nth-child(1) {
-    background-color: #009DEB !important;
-    background-image: url("../assets/img/custom-icons/angle-double-down.svg");
-    background-position: right 1rem center;
-    background-repeat: no-repeat;
-    background-size: 12px;
-    color: white !important;
+  #mapa > div > div > div:nth-child(5) > div > button {
+    background-color: $blue !important;
+    background-image: url("../assets/img/custom-icons/angle-double-down.svg") !important;
+    background-position: right 0.5rem center !important;
+    background-repeat: no-repeat !important;
+    background-size: 12px !important;
+    color: $white !important;
+    padding-right: 2rem !important;
 
     img {
       display: none;
@@ -71,25 +72,24 @@
   }
 
   // Estilos para el dropdown del selector del estilo del mapa
-  #mapa > div > div > div.gmnoprint.gm-style-mtc > div:nth-child(2) {
+  #mapa > div > div > div:nth-child(5) > div > div {
     div {
-      background-color: #009DEB !important;
-      color: white !important;
+      background-color: $blue !important;
+      color: $white !important;
     }
   }
 
   // Estilos para el contenedor de los botones de zoom del mapa
-  #mapa > div > div > div.gmnoprint.gm-bundled-control.gm-bundled-control-on-bottom > div > div {
+  #mapa > div > div > div:nth-child(12) > div.gmnoprint.gm-bundled-control.gm-bundled-control-on-bottom > div > div {
     background-color: transparent !important;
     box-shadow: none !important;
     border: none !important;
   }
 
   // Estilos generales para los 2 botones de zom-in (+) y zoom-out (-) del mapa
-  #mapa > div > div > div.gmnoprint.gm-bundled-control.gm-bundled-control-on-bottom > div > div > button:nth-child(1), #mapa > div > div > div.gmnoprint.gm-bundled-control.gm-bundled-control-on-bottom > div > div > button:nth-child(3) {
-    background-color: #009DEB !important;
+  #mapa > div > div > div:nth-child(12) > div.gmnoprint.gm-bundled-control.gm-bundled-control-on-bottom > div > div > button:nth-child(1), #mapa > div > div > div:nth-child(12) > div.gmnoprint.gm-bundled-control.gm-bundled-control-on-bottom > div > div > button:nth-child(3) {
+    background-color: $blue !important;
     background-repeat: no-repeat !important;
-    background-size: 18px !important;
     background-position: center !important;
 
     img {
@@ -98,20 +98,20 @@
   }
 
   // Estilos para el boton de zoom-in del mapa (+)
-  #mapa > div > div > div.gmnoprint.gm-bundled-control.gm-bundled-control-on-bottom > div > div > button:nth-child(1) {
-    background-image: url("../assets/img/custom-icons/plus.svg") !important;
+  #mapa > div > div > div:nth-child(12) > div.gmnoprint.gm-bundled-control.gm-bundled-control-on-bottom > div > div > button:nth-child(1) {
+    background-image: url("../assets/img/icons/BTN_Mapa1.png") !important;
   }
 
   // Estilos para el boton de zoom-out del mapa (-)
-  #mapa > div > div > div.gmnoprint.gm-bundled-control.gm-bundled-control-on-bottom > div > div > button:nth-child(3) {
+  #mapa > div > div > div:nth-child(12) > div.gmnoprint.gm-bundled-control.gm-bundled-control-on-bottom > div > div > button:nth-child(3) {
     margin-top: 0.5rem !important;
     margin-bottom: 0.5rem !important;
-    background-image: url("../assets/img/custom-icons/minus.svg") !important;
+    background-image: url("../assets/img/icons/BTN_Mapa2.png") !important;
   }
 
   // Estilos para el boton de ubicacion actual
   #you_location_img {
-    background-image: url("../assets/img/custom-icons/location-arrow.svg") !important;
+    background-image: url("../assets/img/icons/BTN_Mapa3.png") !important;
     background-repeat: no-repeat !important;
   }
 
@@ -121,5 +121,34 @@
 
   #grafico-humedad {
     height: 100%;
+  }
+
+  // Estilos para los Custom InfoWindows
+  .title-estacion {
+    font-size: 1.5rem;
+    margin-left: 1rem;
+  }
+
+  .desc-estacion {
+    font-size: 1rem;
+    margin-left: 1rem;
+  }
+
+  .modal-title {
+    border-left-style: solid;
+    border-left-color: $blue;
+    border-left-width: 0.3rem;
+  }
+
+  .nube {
+    margin-left: 1rem;
+  }
+
+  .nombreEstacionFrmCtrl {
+    min-width: 200px !important;
+  }
+
+  .latlngInput {
+    max-width: 120px !important;
   }
 }

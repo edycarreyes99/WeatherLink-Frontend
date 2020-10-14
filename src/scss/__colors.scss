@@ -1,7 +1,17 @@
 /* Custom color variables */
 $color-blue-navy: #051540;
 $custom-light: #EEF2F7;
+$blue: #12ADE6;
+$dark-grey: rgba(0, 0, 0, 0.2);
+$light-green: #6EB15B;
+$light-grey: #EFEFEF;
+$white: #FFFFFF;
 $theme-colors: (
         'blue-navy': $color-blue-navy,
-        'custom-light': $custom-light
+        'custom-light': $custom-light,
+        'blue': $blue,
+        'dark-grey': $dark-grey,
+        'light-green': $light-green,
+        'light-grey': $light-grey,
+        'white':$white
 );

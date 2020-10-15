@@ -20,12 +20,13 @@ let nuevoMarcador = null, customPopup = null;
 firebaseApp.app().auth().onAuthStateChanged((user) => {
     if (user) {
         user.getIdToken(true).then((token) => {
-            console.log("El token del usuario es: ", token)
+            console.log("Usuario logueado: ", user.email);
         }).catch((error) => {
             console.error("No se pudo obtener el token del usuario", error);
         });
     } else {
         console.error("Necesita estar logueado para ver este contenido.");
+        location.replace('/index.html');
     }
 });
 

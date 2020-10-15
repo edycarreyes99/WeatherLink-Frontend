@@ -54,23 +54,18 @@ window.initMap = function () {
         if (customPopup !== null) {
             customPopup.setMap(null);
         }
-        customPopup = new CustomPopup(evento.latLng);
+        customPopup = new CustomPopup(evento.latLng, nuevoMarcador);
         customPopup.setMap(mapa);
-        google.maps.event.addListener(customPopup, 'click', function (event) {
-            alert("overlay");
-        });
 
         google.maps.event.addListener(nuevoMarcador, "click", function (e) {
             if (customPopup !== null) {
                 customPopup.setMap(null);
                 customPopup = null;
             }
-            customPopup = new CustomPopup(nuevoMarcador.getPosition());
+            customPopup = new CustomPopup(nuevoMarcador.getPosition(), nuevoMarcador);
+
             customPopup.setMap(mapa);
 
-            google.maps.event.addListener(customPopup, 'click', function (event) {
-                alert("overlay");
-            });
             google.maps.event.addListener(customPopup, 'closeclick', function () {
                 nuevoMarcador.setMap(null);
             });
@@ -84,17 +79,19 @@ window.initMap = function () {
     addCurrentLocationButton(mapa);
 
     class CustomPopup extends google.maps.OverlayView {
-        constructor(position, cerrarPopup) {
+        constructor(position, marcador) {
             super();
-            this.cerrarPopup = cerrarPopup;
             this.contenido = `<div id="content">
-    <div class="modal-title d-flex align-items-center">
+    <div class="modal-title d-flex align-items-center mt-3 mb-2 ml-3 mr-3">
         <img class="nube" src="../assets/img/custom-icons/rain.svg"
              alt="Nube lloviendo logo" width="40">
         <h6 class="mb-0">
             <span class="title-estacion text-dark d-block">Nueva estación </span>
             <span class="desc-estacion text-info font-weight-light d-block">Estacion Climática</span>
         </h6>
+        <button class="float-right ml-auto btn btn-light equis-cerrar-modal mt-n4">
+            <img src="../assets/img/custom-icons/cross.svg" alt="Equis icono" width="12">
+        </button>
     </div>
     <div class="modal-body">
         <form class="d-flex mt-4">
@@ -104,13 +101,13 @@ window.initMap = function () {
             </div>
             <div class="form-group d-flex m-0 p-0 align-items-center float-right ml-4 mr-3">
                 <span class="text-dark mr-2">Longitud</span>
-                <input type="number" readonly="readonly" class="form-control latlngInput" id="inputPassword"
-                       placeholder="Longitud">
+                <input type="number" readonly="readonly" class="form-control latlngInput lngInput" id="inputPassword"
+                       placeholder="Longitud" value="${position.lng().toString()}">
             </div>
             <div class="form-group d-flex m-0 p-0 align-items-center float-right">
                 <span class="text-dark mr-2">Latitud</span>
-                <input type="number" readonly="readonly" class="form-control latlngInput" id="inputUsername"
-                       placeholder="Latitud">
+                <input type="number" readonly="readonly" class="form-control latlngInput latInput" id="inputUsername"
+                       placeholder="Latitud" value="${position.lat().toString()}">
             </div>
         </form>
     </div>
@@ -135,9 +132,16 @@ window.initMap = function () {
             this.containerDiv.classList.add("popup-container");
             this.containerDiv.appendChild(bubbleAnchor);
             this.cancelarBtn = div.getElementsByClassName('btn-cancelar').item(0);
+            this.equisCerrarModal = div.getElementsByClassName('equis-cerrar-modal').item(0);
             this.cancelarBtn.onclick = function () {
                 div.style.display = 'none';
+                marcador.setMap(null);
             }
+            this.equisCerrarModal.onclick = function () {
+                div.style.display = 'none';
+                marcador.setMap(null);
+            }
+
             // Optionally stop clicks, etc., from bubbling up to the map.
             CustomPopup.preventMapHitsAndGesturesFrom(this.containerDiv);
         }

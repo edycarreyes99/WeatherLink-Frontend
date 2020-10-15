@@ -42,7 +42,13 @@
     padding: 2rem !important;
 
     .KPI-Card {
-      max-width: 24rem;
+      min-width: 300px !important;
+      margin-left: 2rem !important;
+
+      &:hover {
+        cursor: pointer;
+        background-color: $blue-grey-50 !important;
+      }
     }
 
     .card-rain-icon, .card-temperature-icon {

@@ -6,6 +6,7 @@ $dark-grey: rgba(0, 0, 0, 0.2);
 $light-green: #6EB15B;
 $light-grey: #EFEFEF;
 $white: #FFFFFF;
+$blue-grey-50: #eceff1;
 $theme-colors: (
         'blue-navy': $color-blue-navy,
         'custom-light': $custom-light,
@@ -13,5 +14,6 @@ $theme-colors: (
         'dark-grey': $dark-grey,
         'light-green': $light-green,
         'light-grey': $light-grey,
-        'white':$white
+        'white':$white,
+        'blue-grey-50': $blue-grey-50
 );

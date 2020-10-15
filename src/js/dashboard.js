@@ -1,5 +1,7 @@
-import './index'
+import 'bootstrap';
+import '../scss/styles.scss';
 import './gmaps-api'
+import {firebaseApp} from './index';
 
 const Highcharts = require('highcharts');
 require('highcharts/modules/exporting')(Highcharts);
@@ -15,7 +17,20 @@ document.head.appendChild(scriptTag);
 
 let nuevoMarcador = null, customPopup = null;
 
+firebaseApp.app().auth().onAuthStateChanged((user) => {
+    if (user) {
+        user.getIdToken(true).then((token) => {
+            console.log("El token del usuario es: ", token)
+        }).catch((error) => {
+            console.error("No se pudo obtener el token del usuario", error);
+        });
+    } else {
+        console.error("Necesita estar logueado para ver este contenido.");
+    }
+});
+
 window.initMap = function () {
+
     const nicaraguaGeoPoints = {
         lat: 12.865416,
         lng: -85.207229

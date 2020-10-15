@@ -2,17 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0224f981-6350-4b0a-9406-e8c275c6f98a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/js/custom-infowindow.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/js/gmaps-api.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/WeatherLink.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/WeatherLink.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Generated_files.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/watcherTasks.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/custom-infowindow.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/custom-infowindow.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/js/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/dashboard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scss/__colors.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/scss/__colors.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/gmaps-api.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/gmaps-api.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/scss/dashboard.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/scss/dashboard.scss" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -91,7 +85,7 @@
       <workItem from="1602538397686" duration="29451000" />
       <workItem from="1602641196159" duration="18040000" />
       <workItem from="1602701715401" duration="32000" />
-      <workItem from="1602701749573" duration="7518000" />
+      <workItem from="1602701749573" duration="22179000" />
     </task>
     <servers />
   </component>

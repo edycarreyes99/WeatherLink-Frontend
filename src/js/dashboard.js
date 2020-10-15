@@ -1,9 +1,9 @@
 import './index'
 import './gmaps-api'
-import {GmapsApi} from "./gmaps-api";
 
 const Highcharts = require('highcharts');
 require('highcharts/modules/exporting')(Highcharts);
+const DomParser = require('dom-parser');
 const scriptTag = document.createElement('script');
 const apiKey = process.env.GOOGLE_MAPS_API_KEY;
 
@@ -13,10 +13,211 @@ scriptTag.async = true;
 // Se añade el script creado dinamicamente al dashboard.js
 document.head.appendChild(scriptTag);
 
-let gmapsApi;
+let nuevoMarcador = null, customPopup = null;
 
 window.initMap = function () {
-    GmapsApi(document.getElementById('mapa'));
+    const nicaraguaGeoPoints = {
+        lat: 12.865416,
+        lng: -85.207229
+    }
+
+    const mapa = new google.maps.Map(
+        document.getElementById("mapa"), {
+            center: nicaraguaGeoPoints,
+            zoom: 8,
+            streetViewControl: false,
+            rotateControl: false,
+            fullscreenControl: false,
+            mapTypeControl: true,
+            mapTypeControlOptions: {
+                style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+                position: google.maps.ControlPosition.TOP_RIGHT,
+            },
+            motionTrackingControl: true,
+            scaleControl: true,
+        }
+    );
+
+    google.maps.event.addListener(mapa, "rightclick", function (evento) {
+        if (nuevoMarcador !== null) {
+            nuevoMarcador.setMap(null);
+        }
+        nuevoMarcador = new google.maps.Marker({
+            map: mapa,
+            animation: google.maps.Animation.DROP,
+            icon: "../assets/img/icons/ICN_Pin.png",
+            name: "Nueva Estacion",
+        });
+
+        nuevoMarcador.setPosition(evento.latLng);
+
+        if (customPopup !== null) {
+            customPopup.setMap(null);
+        }
+        customPopup = new CustomPopup(evento.latLng);
+        customPopup.setMap(mapa);
+        google.maps.event.addListener(customPopup, 'click', function (event) {
+            alert("overlay");
+        });
+
+        google.maps.event.addListener(nuevoMarcador, "click", function (e) {
+            if (customPopup !== null) {
+                customPopup.setMap(null);
+                customPopup = null;
+            }
+            customPopup = new CustomPopup(nuevoMarcador.getPosition());
+            customPopup.setMap(mapa);
+
+            google.maps.event.addListener(customPopup, 'click', function (event) {
+                alert("overlay");
+            });
+            google.maps.event.addListener(customPopup, 'closeclick', function () {
+                nuevoMarcador.setMap(null);
+            });
+        });
+
+        google.maps.event.addListener(customPopup, 'closeclick', function () {
+            nuevoMarcador.setMap(null);
+        });
+    });
+
+    addCurrentLocationButton(mapa);
+
+    class CustomPopup extends google.maps.OverlayView {
+        constructor(position, cerrarPopup) {
+            super();
+            this.cerrarPopup = cerrarPopup;
+            this.contenido = `<div id="content">
+    <div class="modal-title d-flex align-items-center">
+        <img class="nube" src="../assets/img/custom-icons/rain.svg"
+             alt="Nube lloviendo logo" width="40">
+        <h6 class="mb-0">
+            <span class="title-estacion text-dark d-block">Nueva estación </span>
+            <span class="desc-estacion text-info font-weight-light d-block">Estacion Climática</span>
+        </h6>
+    </div>
+    <div class="modal-body">
+        <form class="d-flex mt-4">
+            <div class="form-group d-flex m-0 p-0 align-items-center nombreEstacionFrmCtrl">
+                <span class="text-dark mr-2">Nombre</span>
+                <input class="form-control" id="staticEmail" placeholder="Nombre estación">
+            </div>
+            <div class="form-group d-flex m-0 p-0 align-items-center float-right ml-4 mr-3">
+                <span class="text-dark mr-2">Longitud</span>
+                <input type="number" readonly="readonly" class="form-control latlngInput" id="inputPassword"
+                       placeholder="Longitud">
+            </div>
+            <div class="form-group d-flex m-0 p-0 align-items-center float-right">
+                <span class="text-dark mr-2">Latitud</span>
+                <input type="number" readonly="readonly" class="form-control latlngInput" id="inputUsername"
+                       placeholder="Latitud">
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <div class="mx-auto">
+            <button type="button" class="btn btn-danger mr-2 btn-cancelar" data-dismiss="modal" id="cancelar-btn">Cancelar</button>
+            <button type="button" class="btn btn-success ml-2 btn-guardar" id="guardar-btn">Guardar</button>
+        </div>
+    </div>
+</div>`;
+
+            this.position = position;
+            const div = document.createElement('div');
+            div.appendChild(document.createRange().createContextualFragment(this.contenido));
+            div.classList.add("popup-bubble");
+            // This zero-height div is positioned at the bottom of the bubble.
+            const bubbleAnchor = document.createElement("div");
+            bubbleAnchor.classList.add("popup-bubble-anchor");
+            bubbleAnchor.appendChild(div);
+            // This zero-height div is positioned at the bottom of the tip.
+            this.containerDiv = document.createElement("div");
+            this.containerDiv.classList.add("popup-container");
+            this.containerDiv.appendChild(bubbleAnchor);
+            this.cancelarBtn = div.getElementsByClassName('btn-cancelar').item(0);
+            this.cancelarBtn.onclick = function () {
+                div.style.display = 'none';
+            }
+            // Optionally stop clicks, etc., from bubbling up to the map.
+            CustomPopup.preventMapHitsAndGesturesFrom(this.containerDiv);
+        }
+
+        /** Called when the popup is added to the map. */
+        onAdd() {
+            this.getPanes().floatPane.appendChild(this.containerDiv);
+        }
+
+        /** Called when the popup is removed from the map. */
+        onRemove() {
+            if (this.containerDiv.parentElement) {
+                this.containerDiv.parentElement.removeChild(this.containerDiv);
+            }
+        }
+
+        /** Called each frame when the popup needs to draw itself. */
+        draw() {
+            const divPosition = this.getProjection().fromLatLngToDivPixel(
+                this.position
+            );
+            // Hide the popup when it is far out of view.
+            const display =
+                Math.abs(divPosition.x) < 4000 && Math.abs(divPosition.y) < 4000
+                    ? "block"
+                    : "none";
+
+            if (display === "block") {
+                this.containerDiv.style.left = divPosition.x + "px";
+                this.containerDiv.style.top = divPosition.y + "px";
+            }
+
+            if (this.containerDiv.style.display !== display) {
+                this.containerDiv.style.display = display;
+            }
+        }
+    }
+}
+
+
+// Metodo para agregar el boton de 'My current location'
+function addCurrentLocationButton(mapa, marcador) {
+    const controlDiv = document.createElement('div');
+
+    const contenedorBoton = document.createElement('button');
+    contenedorBoton.style.backgroundColor = '#12ADE6';
+    contenedorBoton.style.border = 'none';
+    contenedorBoton.style.outline = 'none';
+    contenedorBoton.style.width = '40px';
+    contenedorBoton.style.height = '40px';
+    contenedorBoton.style.borderRadius = '2px';
+    contenedorBoton.style.boxShadow = '0 1px 4px rgba(0,0,0,0.3)';
+    contenedorBoton.style.cursor = 'pointer';
+    contenedorBoton.style.marginRight = '10px';
+    contenedorBoton.style.padding = '0px';
+    contenedorBoton.title = 'Mi ubicación';
+    controlDiv.appendChild(contenedorBoton);
+
+    const iconoBoton = document.createElement('div');
+    iconoBoton.style.margin = '5px';
+    iconoBoton.style.height = '18px';
+    iconoBoton.style.backgroundSize = '40px 40px';
+    iconoBoton.style.backgroundPosition = 'center';
+    iconoBoton.style.backgroundRepeat = 'no-repeat';
+    iconoBoton.id = 'you_location_img';
+    contenedorBoton.appendChild(iconoBoton);
+
+    google.maps.event.addListener(mapa, 'dragend', function () {
+        $('#you_location_img').css('background-position', 'center');
+    });
+
+    contenedorBoton.addEventListener('click', function () {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            const latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+            mapa.setCenter(latlng);
+        });
+    });
+
+    controlDiv.index = 1;
+    mapa.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(controlDiv);
 }
 
 

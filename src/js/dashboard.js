@@ -23,16 +23,12 @@ generarScriptParaGMaps(document);
 fetch('/nueva-estacion-modal.html')
     .then(response => response.text())
     .then(data => {
-        // Do something with your data
-        console.log(data);
         nuevaEstacionModal = data;
     });
 
 fetch('/editar-estacion-modal.html')
     .then(response => response.text())
     .then(data => {
-        // Do something with your data
-        console.log(data);
         editarEstacionModal = data;
     });
 

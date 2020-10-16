@@ -32,7 +32,8 @@ module.exports = {
                 {from: './src/manifest.json'},
                 {from: './src/robots.txt'},
                 {from: './src/assets/img', to: 'assets/img'},
-                {from: './src/pages/modals/nueva-estacion-modal.html'}
+                {from: './src/pages/modals/nueva-estacion-modal.html'},
+                {from: './src/pages/modals/editar-estacion-modal.html'}
             ]
         }),
         new MiniCssExtractPlugin({

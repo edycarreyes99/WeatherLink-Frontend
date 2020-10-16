@@ -31,8 +31,11 @@
   },
   "homepage": "https://github.com/edycarreyes99/WeatherLink-Frontend#readme",
   "dependencies": {
+    "@types/googlemaps": "^3.40.0",
     "axios": "^0.20.0",
     "bootstrap": "^4.5.2",
+    "dom-parser": "^0.1.6",
+    "firebase": "^7.23.0",
     "highcharts": "^8.2.0",
     "jquery": "^3.5.1",
     "popper.js": "^1.16.1"
@@ -43,6 +46,7 @@
     "@babel/preset-env": "^7.11.5",
     "autoprefixer": "^10.0.1",
     "babel-loader": "^8.1.0",
+    "closure-webpack-plugin": "^2.3.0",
     "copy-webpack-plugin": "^6.2.1",
     "css-loader": "^4.3.0",
     "dotenv": "^8.2.0",

@@ -32,6 +32,7 @@ module.exports = {
                 {from: './src/manifest.json'},
                 {from: './src/robots.txt'},
                 {from: './src/assets/img', to: 'assets/img'},
+                {from: './src/pages/modals/nueva-estacion-modal.html'}
             ]
         }),
         new MiniCssExtractPlugin({

@@ -1,57 +1,66 @@
-import './index'
+import 'bootstrap';
+import '../scss/styles.scss';
+import {
+    agregarBotonDeCurrentLocation,
+    agregarEventoDeClickDerecho,
+    extraerEstaciones,
+    generarScriptParaGMaps,
+    inicializarMapa
+} from './gmaps-api';
+import {firebaseApp} from './index';
 
-var Highcharts = require('highcharts');
+const Highcharts = require('highcharts');
 require('highcharts/modules/exporting')(Highcharts);
-const scriptTag = document.createElement('script');
-const apiKey = process.env.GOOGLE_MAPS_API_KEY;
+const axios = require('axios');
 
-scriptTag.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap`;
-scriptTag.defer = true;
+let usertoken;
 
-// Se añade la funcion callback para inicializar el GMap
-window.initMap = function () {
-    const nicaraguaGeoPoints = {
-        lat: 12.865416,
-        lng: -85.207229
+let nuevaEstacionModal = "";
+let editarEstacionModal = "";
+
+generarScriptParaGMaps(document);
+
+fetch('/nueva-estacion-modal.html')
+    .then(response => response.text())
+    .then(data => {
+        // Do something with your data
+        console.log(data);
+        nuevaEstacionModal = data;
+    });
+
+fetch('/editar-estacion-modal.html')
+    .then(response => response.text())
+    .then(data => {
+        // Do something with your data
+        console.log(data);
+        editarEstacionModal = data;
+    });
+
+firebaseApp.app().auth().onAuthStateChanged((user) => {
+    if (user) {
+        user.getIdToken(true).then((token) => {
+            console.log("Usuario logueado: ", user.email, " y el token es: ", token);
+            usertoken = token;
+        }).catch((error) => {
+            usertoken = null;
+        });
+    } else {
+        console.error("Necesita estar logueado para ver este contenido.");
+        location.replace('/index.html');
+        usertoken = null;
     }
+});
 
-    let map = new google.maps.Map(
-        document.getElementById('mapa'),
-        {
-            center: nicaraguaGeoPoints,
-            zoom: 8,
-            streetViewControl: false,
-            rotateControl: false,
-            fullscreenControl: false,
-            mapTypeControl: true,
-            mapTypeControlOptions: {
-                style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
-                position: google.maps.ControlPosition.TOP_RIGHT,
-            },
-            motionTrackingControl: true,
-            scaleControl: true,
-        }
-    )
+window.initMap = function () {
 
-    let marker = new google.maps.Marker({
-        map: map,
-        animation: google.maps.Animation.DROP,
-        icon: "../assets/img/customPin.png",
-        name: "Nueva Estacion"
-    });
+    const mapa = inicializarMapa(google);
 
-    addCurrentLocationButton(map, marker);
+    agregarEventoDeClickDerecho(mapa, google, nuevaEstacionModal);
 
-    let rightClickEvent = google.maps.event.addListener(map, "rightclick", function (event) {
-        map.setCenter(event.latLng);
-        marker.setPosition(event.latLng);
-        infowindow.setContent("Latitude: " + event.latLng.lat() +
-            "<br>" + "Longitude: " + event.latLng.lng());
-        infowindow.open(map, marker);
-    });
+    agregarBotonDeCurrentLocation(mapa);
 
-};
-
+    extraerEstaciones(mapa, firebaseApp, axios, google, editarEstacionModal);
+}
 
 // Se inicializa el grafico para la temperatura
 Highcharts.chart('grafico-temperatura', {
@@ -98,27 +107,29 @@ Highcharts.chart('grafico-temperatura', {
         shared: true,
         useHTML: true
     },
-    series: [{
-        name: 'Estacion 1',
-        data: [49.9, 71.5, 106.4, 129.2, 144.0],
-        marker: {symbol: 'square', radius: 12}
-    }, {
-        name: 'Estacion 2',
-        data: [83.6, 78.8, 98.5, 93.4, 106.0],
-        marker: {symbol: 'square', radius: 12}
-    }, {
-        name: 'Estacion 3',
-        data: [48.9, 38.8, 39.3, 41.4, 47.0],
-        marker: {symbol: 'square', radius: 12}
-    }, {
-        name: 'Estacion 4',
-        data: [42.4, 33.2, 34.5, 39.7, 52.6],
-        marker: {symbol: 'square', radius: 12}
-    }, {
-        name: 'Estacion 5',
-        data: [42.4, 33.2, 34.5, 39.7, 52.6],
-        marker: {symbol: 'square', radius: 12}
-    }],
+    series: [
+        {
+            name: 'Estacion 1',
+            data: [49.9, 71.5, 106.4, 129.2, 144.0],
+            marker: {symbol: 'square', radius: 12}
+        }, {
+            name: 'Estacion 2',
+            data: [83.6, 78.8, 98.5, 93.4, 106.0],
+            marker: {symbol: 'square', radius: 12}
+        }, {
+            name: 'Estacion 3',
+            data: [48.9, 38.8, 39.3, 41.4, 47.0],
+            marker: {symbol: 'square', radius: 12}
+        }, {
+            name: 'Estacion 4',
+            data: [42.4, 33.2, 34.5, 39.7, 52.6],
+            marker: {symbol: 'square', radius: 12}
+        }, {
+            name: 'Estacion 5',
+            data: [42.4, 33.2, 34.5, 39.7, 52.6],
+            marker: {symbol: 'square', radius: 12}
+        }
+    ],
     credits: {
         enabled: false
     }
@@ -204,62 +215,3 @@ Highcharts.chart('grafico-humedad', {
     }
 
 });
-
-// Se añade el script creado dinamicamente al dashboard.js
-document.head.appendChild(scriptTag);
-
-// Metodo para agregar el boton de 'My current location'
-function addCurrentLocationButton(map, marker) {
-    var controlDiv = document.createElement('div');
-
-    var firstChild = document.createElement('button');
-    firstChild.style.backgroundColor = '#009DEB';
-    firstChild.style.border = 'none';
-    firstChild.style.outline = 'none';
-    firstChild.style.width = '40px';
-    firstChild.style.height = '40px';
-    firstChild.style.borderRadius = '2px';
-    firstChild.style.boxShadow = '0 1px 4px rgba(0,0,0,0.3)';
-    firstChild.style.cursor = 'pointer';
-    firstChild.style.marginRight = '10px';
-    firstChild.style.padding = '0px';
-    firstChild.title = 'Mi ubicación';
-    controlDiv.appendChild(firstChild);
-
-    var secondChild = document.createElement('div');
-    secondChild.style.margin = '5px';
-    secondChild.style.height = '18px';
-    secondChild.style.backgroundSize = '18px 18px';
-    secondChild.style.backgroundPosition = 'center';
-    secondChild.style.backgroundRepeat = 'no-repeat';
-    secondChild.id = 'you_location_img';
-    firstChild.appendChild(secondChild);
-
-    google.maps.event.addListener(map, 'dragend', function () {
-        $('#you_location_img').css('background-position', 'center');
-    });
-
-    firstChild.addEventListener('click', function () {
-        var imgX = '0';
-        var animationInterval = setInterval(function () {
-            if (imgX === '-18') imgX = '0';
-            else imgX = '-18';
-            $('#you_location_img').css('background-position', imgX + 'center');
-        }, 500);
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function (position) {
-                var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                marker.setPosition(latlng);
-                map.setCenter(latlng);
-                clearInterval(animationInterval);
-                $('#you_location_img').css('background-position', '-144px 0px');
-            });
-        } else {
-            clearInterval(animationInterval);
-            $('#you_location_img').css('background-position', '0px 0px');
-        }
-    });
-
-    controlDiv.index = 1;
-    map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(controlDiv);
-}

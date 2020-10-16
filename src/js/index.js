@@ -35,7 +35,6 @@ function iniciarSesion() {
     if (validarInputs) {
         const promise = firebase.app().auth().signInWithEmailAndPassword(emailInput.value.toString(), passwordInput.value.toString());
         promise.then(user => {
-            console.log(user.user.email);
             alert(`¡Bienvenido ${user.user.email}!`)
             location.replace('/dashboard.html');
         });

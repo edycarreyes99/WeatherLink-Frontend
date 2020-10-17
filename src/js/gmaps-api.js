@@ -103,13 +103,12 @@ export function generarMarcador(mapa, nombre, google) {
     });
 }
 
-export function generarPopup(latLng, nuevoMarcador, nombre, nuevaEstacionModal, google) {
+export function generarPopup(latLng, nuevoMarcador, estacion, nuevaEstacionModal, google) {
     class CustomPopup extends google.maps.OverlayView {
-        constructor(position, marcador, nombreEstacion, contenido) {
+        constructor(position, marcador, estacion, contenido) {
             super();
-            this.nombreEstacion = nombreEstacion;
+            this.estacion = estacion;
             this.contenido = contenido;
-
             this.position = position;
             const div = document.createElement('div');
             div.appendChild(document.createRange().createContextualFragment(this.contenido));
@@ -122,34 +121,39 @@ export function generarPopup(latLng, nuevoMarcador, nombre, nuevaEstacionModal, 
             this.containerDiv = document.createElement("div");
             this.containerDiv.classList.add("popup-container");
             this.containerDiv.appendChild(bubbleAnchor);
-            this.cancelarBtn = div.getElementsByClassName('btn-cancelar').item(0);
             this.equisCerrarModal = div.getElementsByClassName('equis-cerrar-modal').item(0);
-            this.cancelarBtn.onclick = function () {
-                div.style.display = 'none';
-                bubbleAnchor.style.display = 'none';
-                if (nombreEstacion === "nueva-estacion") {
-                    marcador.setMap(null);
-                }
-            }
             this.equisCerrarModal.onclick = function () {
                 div.style.display = 'none';
                 bubbleAnchor.style.display = 'none';
-                console.log(this.nombreEstacion);
-                if (nombreEstacion === "nueva-estacion") {
+                if (estacion === "nueva-estacion") {
                     marcador.setMap(null);
                 }
             }
+            if (estacion === "nueva-estacion") {
+                this.cancelarBtn = div.getElementsByClassName('btn-cancelar').item(0);
+                this.cancelarBtn.onclick = function () {
+                    div.style.display = 'none';
+                    bubbleAnchor.style.display = 'none';
+                    marcador.setMap(null);
+                }
 
-            this.nombreEstacionInput = div.getElementsByClassName('nombreEstacion').item(0);
-            if (nombreEstacion === "nueva-estacion") {
+                this.nombreEstacionInput = div.getElementsByClassName('nombreEstacion').item(0);
                 this.nombreEstacionInput.value = "";
+                this.latitudInput = div.getElementsByClassName('latInput').item(0)
+                this.latitudInput.value = position.lat().toString();
+                this.longitudInput = div.getElementsByClassName('lngInput').item(0)
+                this.longitudInput.value = position.lng().toString();
             } else {
-                this.nombreEstacionInput = nombreEstacion;
+                this.nombreEstacionLabel = div.getElementsByClassName('title-estacion').item(0);
+                this.nombreEstacionLabel.innerHTML = estacion["name"];
+                this.humedadLabel = div.getElementsByClassName('title-humedad').item(0);
+                this.humedadLabel.innerHTML = estacion['humedad'] + "% de humedad.";
+                this.temperaturaLabel = div.getElementsByClassName('title-temperatura').item(0);
+                this.temperaturaLabel.innerHTML = estacion["temperatura"] + "°C de temperatura.";
+                this.fechaActualizacionLabel = div.getElementsByClassName('title-fecha-modificacion').item(0);
+                const date = new Date(estacion["updatedAt"]);
+                this.fechaActualizacionLabel.innerHTML = "Actualizado el " + this.generarFecha(date);
             }
-            this.latitudInput = div.getElementsByClassName('latInput').item(0)
-            this.latitudInput.value = position.lat().toString();
-            this.longitudInput = div.getElementsByClassName('lngInput').item(0)
-            this.longitudInput.value = position.lng().toString();
 
             // Optionally stop clicks, etc., from bubbling up to the map.
             CustomPopup.preventMapHitsAndGesturesFrom(this.containerDiv);
@@ -187,9 +191,45 @@ export function generarPopup(latLng, nuevoMarcador, nombre, nuevaEstacionModal, 
                 this.containerDiv.style.display = display;
             }
         }
+
+        generarFecha(date) {
+            const meses = [
+                "Enero",
+                "Febrero",
+                "Marzo",
+                "Abril",
+                "Mayo",
+                "Junio",
+                "Julio",
+                "Agosto",
+                "Septiembre",
+                "Octubre",
+                "Noviembre",
+                "Diciembre",
+            ];
+            let fecha = ""
+            let time = "";
+            fecha += date.getDate() + " de " + meses[date.getMonth()].substr(0, 3) + " ";
+            fecha += "a las "
+            if (date.getHours() > 12) {
+                time = "pm"
+                fecha += date.getHours() - 12;
+            } else {
+                time = "am"
+                fecha += date.getHours();
+            }
+            if (date.getMinutes() < 10) {
+                fecha += ":0" + date.getMinutes()
+            } else {
+                fecha += ":" + date.getMinutes()
+            }
+            fecha += " " + time;
+
+            return fecha;
+        }
     }
 
-    return new CustomPopup(latLng, nuevoMarcador, nombre, nuevaEstacionModal)
+    return new CustomPopup(latLng, nuevoMarcador, estacion, nuevaEstacionModal)
 }
 
 export function extraerEstaciones(mapa, firebaseApp, axios, google, editarEstacionModal) {
@@ -197,7 +237,6 @@ export function extraerEstaciones(mapa, firebaseApp, axios, google, editarEstaci
     firebaseApp.app().auth().onAuthStateChanged((user) => {
         if (user) {
             user.getIdToken(true).then((token) => {
-                console.log("Usuario logueado: ", user.email, " y el token es: ", token);
                 const config = {
                     method: 'get',
                     url: 'https://localhost:5001/Estaciones',
@@ -222,12 +261,7 @@ export function extraerEstaciones(mapa, firebaseApp, axios, google, editarEstaci
                         } else {
                             $(response.data["data"]).each((index, estacion) => {
                                 $("#lista-KPI").removeClass("d-flex justify-content-center align-items-center").append(
-                                    generarEstacionCard(
-                                        estacion["id"],
-                                        estacion["name"],
-                                        estacion["humedad"],
-                                        estacion["temperatura"]
-                                    )
+                                    generarEstacionCard(estacion)
                                 )
                                 let popup = null;
 
@@ -245,13 +279,9 @@ export function extraerEstaciones(mapa, firebaseApp, axios, google, editarEstaci
                                         popup.setMap(null);
                                         popup = null;
                                     }
-                                    popup = generarPopup(nuevoMarcador.getPosition(), nuevoMarcador, estacion['name'], editarEstacionModal);
+                                    popup = generarPopup(nuevoMarcador.getPosition(), nuevoMarcador, estacion, editarEstacionModal, google);
 
                                     popup.setMap(mapa);
-
-                                    google.maps.event.addListener(popup, 'closeclick', function () {
-                                        nuevoMarcador.setMap(null);
-                                    });
                                 });
 
                                 $(`#${estacion["id"]}`).click(() => {
@@ -264,6 +294,7 @@ export function extraerEstaciones(mapa, firebaseApp, axios, google, editarEstaci
                         alert(error);
                     });
             }).catch((error) => {
+                alert("Hubo un error al extraer el token del usuario", error);
                 usertoken = null;
             });
         } else {
@@ -274,25 +305,25 @@ export function extraerEstaciones(mapa, firebaseApp, axios, google, editarEstaci
     });
 }
 
-function generarEstacionCard(id, nombre, humedad, temperatura) {
+function generarEstacionCard(estacion) {
     return `
-    <li id="${id}">
+    <li id="${estacion['id']}">
                                 <div class="shadow bg-light rounded KPI-Card p-2 mt-3">
-                                    <div class="titulo-dashboard mb-3"><h5 class="ml-3 text-dark">Estacion: ${nombre}</h5></div>
+                                    <div class="titulo-dashboard mb-3"><h5 class="ml-3 text-dark">Estacion: ${estacion['name']}</h5></div>
                                     <div class="row">
                                         <div class="col-6 p-0 m-0 d-flex">
                                             <div class="ml-3 d-flex justify-content-center align-items-center"><img
                                                     src="../assets/img/custom-icons/rain.svg" alt="Rain Icon"
                                                     class="card-rain-icon"></div>
                                             <div class="d-block"><h5 class="text-dark d-block font-weight-bold ml-2 mb-0">
-                                                ${humedad}%</h5>
+                                                ${estacion['humedad']}%</h5>
                                                 <span class="text-dark d-block ml-2">Humedad</span></div>
                                         </div>
                                         <div class="col-6 p-0 m-0 d-flex">
                                             <div class="d-flex justify-content-center align-items-center"><img
                                                     src="../assets/img/custom-icons/temperature.svg" alt="Temperature Icon"
                                                     class="card-temperature-icon"></div>
-                                            <div class="d-block"><h5 class="text-dark d-block font-weight-bold ml-2 mb-0">${temperatura}
+                                            <div class="d-block"><h5 class="text-dark d-block font-weight-bold ml-2 mb-0">${estacion['temperatura']}
                                                 C°</h5>
                                                 <span class="text-dark d-block ml-2 text-break">Temperatura</span></div>
                                         </div>

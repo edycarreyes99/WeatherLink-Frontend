@@ -1,35 +1,45 @@
+// Se importan las dependencias y los archivos a utilizarse
 import 'bootstrap';
 import '../scss/styles.scss';
 import * as firebase from 'firebase/app';
 import "firebase/auth";
 
+// Variable de configuracion de firebase
 const firebaseConfig = {
-    apiKey: "AIzaSyDp4JkqzG6unM2B-KlVlLDsnKadbcIPdhg",
-    authDomain: "weatherlink.firebaseapp.com",
-    databaseURL: "https://weatherlink.firebaseio.com",
-    projectId: "weatherlink",
-    storageBucket: "weatherlink.appspot.com",
-    messagingSenderId: "410964094250",
-    appId: "1:410964094250:web:af25beeec5f42f75e74253",
-    measurementId: "G-XVG5XE2LGV"
+    apiKey: process.env.FIREBASE_APIKEY,
+    authDomain: process.env.FIREBASE_AUTHDOMAIN,
+    databaseURL: process.env.FIREBASE_DATABASEURL,
+    projectId: process.env.FIREBASE_PROJECTID,
+    storageBucket: process.env.FIREBASE_STORAGEBUCKET,
+    messagingSenderId: process.env.FIREBASE_MESSAGINGSENDERID,
+    appId: process.env.FIREBASE_APPID,
+    measurementId: process.env.FIREBASE_MEASUREMENTID
 };
 
+// Variables globales para el login
 let emailInput;
 let passwordInput;
 
+// Se inicializa la plataforma de firebase en el proyecto
 firebase.initializeApp(firebaseConfig)
 
+// Se exoprta la variable de firebase
 export const firebaseApp = firebase;
 
 $(document).ready(function () {
     emailInput = document.getElementById('emailInput');
     passwordInput = document.getElementById('passwordInput');
+
+    // Evento que se ejecuta cuando el usuario hace 'click' en el boton de 'Iniciar Sesion'
     $('#loginButton').click(iniciarSesion);
+
+    // Se establece la persisetencia de autenticacion por SESSION unicamente
     firebase.app().auth().setPersistence(firebase.auth.Auth.Persistence.SESSION).then(function () {
-        console.log("Persistencia establecida correctamente.");
+        console.log("Persistencia de autenticacion establecida correctamente.");
     });
 })
 
+// Metodo que se ejecuta para iniciar sesion
 function iniciarSesion() {
     console.log("Iniciando sesion");
     if (validarInputs) {
@@ -52,6 +62,7 @@ function iniciarSesion() {
     }
 }
 
+// Metodo para validar los inputs de email y pasword
 function validarInputs() {
 
     if (emailInput.value.toString().trim() === '' || passwordInput.value.toString().trim() === '') {

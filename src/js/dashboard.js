@@ -1,3 +1,4 @@
+// Se importan las dependencias y archivos a utilizarse
 import 'bootstrap';
 import '../scss/styles.scss';
 import {
@@ -13,25 +14,29 @@ const Highcharts = require('highcharts');
 require('highcharts/modules/exporting')(Highcharts);
 const axios = require('axios');
 
+// Variables globales
 let usertoken;
-
 let nuevaEstacionModal = "";
 let editarEstacionModal = "";
 
+// Se llama al metodo que genera el script de google maps y lo inserta en <head/> del documento
 generarScriptParaGMaps(document);
 
+// Se carga el archivo modal para agregar una nueva estacion
 fetch('/nueva-estacion-modal.html')
     .then(response => response.text())
     .then(data => {
         nuevaEstacionModal = data;
     });
 
+// Se carga el archivo modal para editar o ver la informacion de una estacion
 fetch('/editar-estacion-modal.html')
     .then(response => response.text())
     .then(data => {
         editarEstacionModal = data;
     });
 
+// Se determina si hay algun usuario logueado y se inicializa la variable token con el valor del UToken del usuario actual si lo hay
 firebaseApp.app().auth().onAuthStateChanged((user) => {
     if (user) {
         user.getIdToken(true).then((token) => {
@@ -47,14 +52,19 @@ firebaseApp.app().auth().onAuthStateChanged((user) => {
     }
 });
 
+// Se inserta la funcion initMap() que es la que toma como parametro el script de google maps para inicializar los mapas
 window.initMap = function () {
 
+    // Se invoca al metodo para inicializar el mapa en la vista y se guarda en una variable local
     const mapa = inicializarMapa(google);
 
+    // Se invoca al metodo que agrega el listener de 'rightclick' en el mapa para añadir una nueva estacion
     agregarEventoDeClickDerecho(mapa, google, nuevaEstacionModal, axios);
 
+    // Se invoca al metodo para agregar el boton sobre el mapa que otorga la ubicacion actual del usuario
     agregarBotonDeCurrentLocation(mapa);
 
+    // Por primera instancia se invoca al metodo que extrae y cara las estaciones en la vista
     extraerEstaciones(mapa, firebaseApp, axios, google, editarEstacionModal, 1);
 
     localStorage.setItem("ultima-actualizacion-kpi", new Date())

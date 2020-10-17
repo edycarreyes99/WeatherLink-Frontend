@@ -14,6 +14,19 @@
     <title>Dashboard - WeatherLink</title>
 </head>
 
+<!-- Header de la pagina -->
+<header class="p-5">
+    <div class="titulo-dashboard">
+        <h3 class="ml-3 text-dark">
+            Administración de Estaciones Climáticas
+        </h3>
+        <h5 class="ml-3 text-secondary">
+            Estaciones de Clima
+        </h5>
+    </div>
+</header>
+<!-- End header de la pagina -->
+
 <!-- Body de la pagina -->
 <body class="p-0 m-0">
 <!-- En caso de que el navegador tenga deshabilitado javascript se muestra el siguiente mensaje -->
@@ -23,42 +36,38 @@
 
 <!-- Seccion Main -->
 <main id="main" role="main" class="dashboard-page">
-    <div>
-        <div class="p-5">
-            <div class="titulo-dashboard">
-                <h3 class="ml-3 text-dark">
-                    Administración de Estaciones Climáticas
-                </h3>
-                <h5 class="ml-3 text-secondary">
-                    Estaciones de Clima
-                </h5>
+    <!-- Contenedor de la parte superior de la pagina -->
+    <div class="top-container">
+        <div class="row">
+            <div class="col-3 p-0 m-0">
+                <ul class="d-flex justify-content-center" id="lista-KPI">
+                </ul>
             </div>
-        </div>
-        <div class="top-container">
-            <div class="row">
-                <div class="col-3 p-0 m-0">
-                    <ul class="d-flex justify-content-center" id="lista-KPI">
-                    </ul>
-                </div>
-                <div class="col-9 p-0 m-0">
-                    <div class="p-0 m-0" id="mapa">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="bottom-container">
-            <div class="row">
-                <div class="col-6 p-5">
-                    <div class="shadow bg-light rounded" id="grafico-temperatura">
-                    </div>
-                </div>
-                <div class="col-6 p-5">
-                    <div class="shadow bg-light rounded" id="grafico-humedad">
-                    </div>
+            <div class="col-9 p-0 m-0">
+                <div class="p-0 m-0" id="mapa">
                 </div>
             </div>
         </div>
     </div>
+    <!-- End Contenedor de la parte superior de la pagina -->
+
+    <!-- Contenedor de la parte inferior de la pagina -->
+    <div class="bottom-container">
+        <div class="row">
+            <!-- Columna para el grafico de la temperatura -->
+            <div class="col-6 p-5">
+                <div class="shadow bg-light rounded" id="grafico-temperatura"></div>
+            </div>
+            <!-- End columna para el grafico de la humedad -->
+
+            <!-- Columna para el grafico de la humedad -->
+            <div class="col-6 p-5">
+                <div class="shadow bg-light rounded" id="grafico-humedad"></div>
+            </div>
+            <!-- End columna para el grafico de la humedad -->
+        </div>
+    </div>
+    <!-- End Contenedor de la parte inferior de la pagina -->
 </main>
 <!-- End main-->
 </body>

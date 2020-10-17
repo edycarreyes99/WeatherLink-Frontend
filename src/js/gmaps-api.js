@@ -1,4 +1,6 @@
 let marcadores = [];
+let popup = null;
+let nuevoMarcador = null;
 
 import {actualizarEstacion, agregarEstacion, eliminarEstacion} from "./weatherlink-api";
 
@@ -37,8 +39,6 @@ export function inicializarMapa(google) {
 }
 
 export function agregarEventoDeClickDerecho(mapa, google, nuevaEstacionModal, axios) {
-    let nuevoMarcador = null;
-    let customPopup = null;
     google.maps.event.addListener(mapa, "rightclick", function (evento) {
         if (nuevoMarcador !== null) {
             nuevoMarcador.setMap(null);
@@ -47,12 +47,12 @@ export function agregarEventoDeClickDerecho(mapa, google, nuevaEstacionModal, ax
 
         nuevoMarcador.setPosition(evento.latLng);
 
-        if (customPopup !== null) {
-            customPopup.setMap(null);
+        if (popup !== null) {
+            popup.setMap(null);
         }
 
-        customPopup = generarPopup(evento.latLng, nuevoMarcador, "nueva-estacion", nuevaEstacionModal, google, mapa);
-        customPopup.setMap(mapa);
+        popup = generarPopup(evento.latLng, nuevoMarcador, "nueva-estacion", nuevaEstacionModal, google, mapa);
+        popup.setMap(mapa);
     });
 }
 
@@ -325,23 +325,25 @@ export function extraerEstaciones(mapa, firebaseApp, axios, google, editarEstaci
                                 $("#lista-KPI").removeClass("d-flex justify-content-center align-items-center").append(
                                     generarEstacionCard(estacion)
                                 )
-                                let popup = null;
 
-                                let nuevoMarcador = generarMarcador(mapa, estacion["name"], google, animacion)
+                                let marcador = generarMarcador(mapa, estacion["name"], google, animacion)
 
-                                nuevoMarcador.setPosition(new google.maps.LatLng({
+                                marcador.setPosition(new google.maps.LatLng({
                                     lat: estacion["latitude"],
                                     lng: estacion["longitude"]
                                 }));
 
-                                nuevoMarcador.setMap(mapa);
+                                marcador.setMap(mapa);
 
-                                google.maps.event.addListener(nuevoMarcador, "click", function (e) {
+                                google.maps.event.addListener(marcador, "click", function (e) {
                                     if (popup !== null) {
                                         popup.setMap(null);
                                         popup = null;
                                     }
-                                    popup = generarPopup(nuevoMarcador.getPosition(), nuevoMarcador, estacion, editarEstacionModal, google, mapa);
+                                    if (nuevoMarcador !== null) {
+                                        nuevoMarcador.setMap(null);
+                                    }
+                                    popup = generarPopup(marcador.getPosition(), marcador, estacion, editarEstacionModal, google, mapa);
 
                                     popup.setMap(mapa);
                                 });
@@ -351,11 +353,25 @@ export function extraerEstaciones(mapa, firebaseApp, axios, google, editarEstaci
                                         lat: parseFloat(e.currentTarget.attributes[2].value),
                                         lng: parseFloat(e.currentTarget.attributes[1].value)
                                     }
+
+
                                     mapa.panTo(estacionGeoPoints);
-                                    console.log(e.currentTarget.attributes[1].value, e.currentTarget.attributes[2].value);
+
+                                    if (popup !== null) {
+                                        popup.setMap(null);
+                                        popup = null;
+                                    }
+
+                                    if (nuevoMarcador !== null) {
+                                        nuevoMarcador.setMap(null);
+                                    }
+
+                                    popup = generarPopup(mapa.getCenter(), marcador, estacion, editarEstacionModal, google, mapa);
+
+                                    popup.setMap(mapa);
                                 });
 
-                                marcadores.push(nuevoMarcador);
+                                marcadores.push(marcador);
                             });
                         }
                     })

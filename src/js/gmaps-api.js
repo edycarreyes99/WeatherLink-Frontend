@@ -1,6 +1,6 @@
 let marcadores = [];
 
-import {agregarEstacion} from "./weatherlink-api";
+import {actualizarEstacion, agregarEstacion} from "./weatherlink-api";
 
 export function generarScriptParaGMaps(document) {
     const scriptTag = document.createElement('script');
@@ -178,11 +178,19 @@ export function generarPopup(latLng, nuevoMarcador, estacion, modal, google, map
                     cancelarEdicionBtn.style.display = 'none';
                 }
                 actualizarNombreBtn.onclick = function () {
-                    cancelarEdicionBtn.style.display = 'none';
-                    editarEstacionBtn.style.display = 'block';
-                    editarNombreEstacionInput.style.display = 'none';
-                    nombreEstacionLabel.style.display = 'block';
-                    actualizarNombreBtn.style.display = 'none';
+                    if (editarNombreEstacionInput.value.trim() === "") {
+                        alert("El nombre no puede estar vacio.")
+                    } else {
+                        if (confirm(`¿Esta seguro que desea editar el nombre de la estacion "${estacion['name']}"?`)) {
+                            actualizarEstacion(estacion["id"], editarNombreEstacionInput.value.toString());
+                        } else {
+                            cancelarEdicionBtn.style.display = 'none';
+                            editarEstacionBtn.style.display = 'block';
+                            editarNombreEstacionInput.style.display = 'none';
+                            nombreEstacionLabel.style.display = 'block';
+                            actualizarNombreBtn.style.display = 'none';
+                        }
+                    }
                 }
                 cancelarEdicionBtn.style.display = 'none';
                 actualizarNombreBtn.style.display = 'none';

@@ -2,12 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0224f981-6350-4b0a-9406-e8c275c6f98a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/assets/img/custom-icons/check.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/img/custom-icons/cross-white.svg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/js/gmaps-api.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/gmaps-api.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/modals/editar-estacion-modal.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/modals/editar-estacion-modal.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scss/dashboard.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/scss/dashboard.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/weatherlink-api.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/weatherlink-api.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -124,7 +121,7 @@
       <workItem from="1602641196159" duration="18040000" />
       <workItem from="1602701715401" duration="32000" />
       <workItem from="1602701749573" duration="34273000" />
-      <workItem from="1602817572796" duration="37562000" />
+      <workItem from="1602817572796" duration="38631000" />
     </task>
     <servers />
   </component>

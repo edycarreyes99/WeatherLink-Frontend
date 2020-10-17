@@ -16,10 +16,27 @@ export function agregarEstacion(nombre, posicion, mapa, modal) {
         data: data
     };
 
-    realizarSolicitud(config, mapa, google, modal);
+    realizarSolicitud(config, "agregado");
 }
 
-function realizarSolicitud(config, mapa, google, modal) {
+export function actualizarEstacion(id, nuevoNombre) {
+    const data = {
+        id,
+        nombre: nuevoNombre
+    }
+    let config = {
+        method: 'put',
+        url: 'https://localhost:5001/ActualizarEstacion/',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        data: data
+    };
+
+    realizarSolicitud(config, "actualizado");
+}
+
+function realizarSolicitud(config, tipoSolicitud) {
     firebaseApp.app().auth().onAuthStateChanged((user) => {
         if (user !== null) {
             user.getIdToken(true).then((token) => {
@@ -27,16 +44,16 @@ function realizarSolicitud(config, mapa, google, modal) {
                 axios(config)
                     .then(function (response) {
                         console.log(JSON.stringify(response.data));
-                        alert("La estacion " + config["data"]["nombre"] + " se ha guardado correctamente.");
+                        alert("La estacion " + config["data"]["nombre"] + " se ha " + tipoSolicitud + "correctamente.");
                         location.reload();
                     })
                     .catch(function (error) {
                         console.log(error);
-                        alert("Hubo un error al guardar la estacion: ", error);
+                        alert("Hubo un error al " + tipoSolicitud + " la estacion: ", error);
                     });
             });
         } else {
-            console.error("No hay un usuario loggueado");
+            console.error("No hay un usuario loggueado.");
         }
     });
 }

@@ -55,6 +55,7 @@ firebaseApp.app().auth().onAuthStateChanged((user) => {
 // Se inserta la funcion initMap() que es la que toma como parametro el script de google maps para inicializar los mapas
 window.initMap = function () {
 
+    // Se invoca al metodo para inicializar el mapa en la vista y se guarda en una variable local
     const mapa = inicializarMapa(google);
 
     // Se invoca al metodo que agrega el listener de 'rightclick' en el mapa para añadir una nueva estacion

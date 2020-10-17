@@ -1,9 +1,12 @@
+// Se imoprtan los metodos y dependencias a utilizarse
+import {actualizarEstacion, agregarEstacion, eliminarEstacion} from "./weatherlink-api";
+
+// Variables globales
 let marcadores = [];
 let popup = null;
 let nuevoMarcador = null;
 
-import {actualizarEstacion, agregarEstacion, eliminarEstacion} from "./weatherlink-api";
-
+// Metodo que genera el script para google maps
 export function generarScriptParaGMaps(document) {
     const scriptTag = document.createElement('script');
     const apiKey = process.env.GOOGLE_MAPS_API_KEY;
@@ -13,13 +16,16 @@ export function generarScriptParaGMaps(document) {
     document.head.appendChild(scriptTag);
 }
 
+// Metodo que inicializa el mapa en la vista
 export function inicializarMapa(google) {
 
+    // GeoPoints fijos para el pais de Nicaragua
     const nicaraguaGeoPoints = {
         lat: 12.865416,
         lng: -85.207229
     }
 
+    // Se ratorna una nueva instancia de mapas
     return new google.maps.Map(
         document.getElementById("mapa"), {
             center: nicaraguaGeoPoints,
@@ -38,19 +44,27 @@ export function inicializarMapa(google) {
     );
 }
 
+// Metodo que inserta el listener para el 'rightclick' en el mapa
 export function agregarEventoDeClickDerecho(mapa, google, nuevaEstacionModal, axios) {
     google.maps.event.addListener(mapa, "rightclick", function (evento) {
+
+        // Se determina si hay un marcador existente y se elimina del mapa
         if (nuevoMarcador !== null) {
             nuevoMarcador.setMap(null);
         }
+
+        // Se genera un nuevo marcador
         nuevoMarcador = generarMarcador(mapa, "Nueva estación", google, 1);
 
+        // Se establece la posicion del marcador con las cordenadas del evento 'rightclick'
         nuevoMarcador.setPosition(evento.latLng);
 
+        // Se valida si hay algun otro popup sobre la vista del mapa y se elimina
         if (popup !== null) {
             popup.setMap(null);
         }
 
+        // Se genera un nuevo popup y se muestra en la vista del mapa
         popup = generarPopup(evento.latLng, nuevoMarcador, "nueva-estacion", nuevaEstacionModal, google, mapa);
         popup.setMap(mapa);
     });
@@ -83,10 +97,7 @@ export function agregarBotonDeCurrentLocation(mapa) {
     iconoBoton.id = 'you_location_img';
     contenedorBoton.appendChild(iconoBoton);
 
-    google.maps.event.addListener(mapa, 'dragend', function () {
-        $('#you_location_img').css('background-position', 'center');
-    });
-
+    // Se implementa el evento 'click' para mostrar la ubicacion actual del usuario en el mapa
     contenedorBoton.addEventListener('click', function () {
         navigator.geolocation.getCurrentPosition(function (position) {
             const latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
@@ -94,11 +105,16 @@ export function agregarBotonDeCurrentLocation(mapa) {
         });
     });
 
+    // Se establece la vista del boton sobre el mapa
     controlDiv.index = 1;
+
+    // Se establece la posicion del boton a la derecha del mapa
     mapa.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(controlDiv);
 }
 
+// Metodo para generar un nuevo marcador
 export function generarMarcador(mapa, nombre, google, animacion) {
+    // Se retorna la instancia de un nuevo marcador
     return new google.maps.Marker({
         map: mapa,
         animation: animacion !== null ? google.maps.Animation.DROP : 0,
@@ -107,6 +123,7 @@ export function generarMarcador(mapa, nombre, google, animacion) {
     });
 }
 
+// Metodo que contiene la clase para generar un nuevo Popup
 export function generarPopup(latLng, nuevoMarcador, estacion, modal, google, mapa) {
     class CustomPopup extends google.maps.OverlayView {
         constructor(position, marcador, estacion, contenido, google, modal) {
@@ -117,15 +134,15 @@ export function generarPopup(latLng, nuevoMarcador, estacion, modal, google, map
             const div = document.createElement('div');
             div.appendChild(document.createRange().createContextualFragment(this.contenido));
             div.classList.add("popup-bubble");
-            // This zero-height div is positioned at the bottom of the bubble.
             const bubbleAnchor = document.createElement("div");
             bubbleAnchor.classList.add("popup-bubble-anchor");
             bubbleAnchor.appendChild(div);
-            // This zero-height div is positioned at the bottom of the tip.
             this.containerDiv = document.createElement("div");
             this.containerDiv.classList.add("popup-container");
             this.containerDiv.appendChild(bubbleAnchor);
             this.equisCerrarModal = div.getElementsByClassName('equis-cerrar-modal').item(0);
+
+            // Evento para cerrar el popup
             this.equisCerrarModal.onclick = function () {
                 div.style.display = 'none';
                 bubbleAnchor.style.display = 'none';
@@ -133,6 +150,8 @@ export function generarPopup(latLng, nuevoMarcador, estacion, modal, google, map
                     marcador.setMap(null);
                 }
             }
+
+            // Se determina que tipo de llamado se le hizo al popup
             if (estacion === "nueva-estacion") {
                 this.cancelarBtn = div.getElementsByClassName('btn-cancelar').item(0);
                 this.cancelarBtn.onclick = function () {
@@ -148,6 +167,8 @@ export function generarPopup(latLng, nuevoMarcador, estacion, modal, google, map
                 this.longitudInput = div.getElementsByClassName('lngInput').item(0);
                 this.longitudInput.value = position.lng().toString();
                 this.guardarBtn = div.getElementsByClassName('btn-guardar').item(0);
+
+                // Metodo que se ejecuta cuando se desea guardar una nueva estacion
                 this.guardarBtn.onclick = function () {
                     const nombre = nombreEstacionInput.value;
                     if (nombre.trim() === "") {
@@ -171,6 +192,8 @@ export function generarPopup(latLng, nuevoMarcador, estacion, modal, google, map
                 let cancelarEdicionBtn = div.getElementsByClassName('cancelar-editar-nombre-estacion-button').item(0);
                 let actualizarNombreBtn = div.getElementsByClassName('actualizar-nombre-estacion-button').item(0);
                 let inactivarEstacionBtn = div.getElementsByClassName('inactivar-estacion-btn').item(0);
+
+                // Metodo que se ejecuta cuando se selecciona el boton de cancelar la edicion de una estacion
                 cancelarEdicionBtn.onclick = function () {
                     actualizarNombreBtn.style.display = 'none';
                     editarEstacionBtn.style.display = 'block';
@@ -178,6 +201,8 @@ export function generarPopup(latLng, nuevoMarcador, estacion, modal, google, map
                     editarNombreEstacionInput.style.display = 'none';
                     cancelarEdicionBtn.style.display = 'none';
                 }
+
+                // Metodo que se ejecuta cuando se desea actualizar el contenido de una estacion
                 actualizarNombreBtn.onclick = function () {
                     if (editarNombreEstacionInput.value.trim() === "") {
                         alert("El nombre no puede estar vacio.")
@@ -196,6 +221,8 @@ export function generarPopup(latLng, nuevoMarcador, estacion, modal, google, map
                 cancelarEdicionBtn.style.display = 'none';
                 actualizarNombreBtn.style.display = 'none';
                 editarNombreEstacionInput.style.display = 'none';
+
+                // Metodo que se ejecuta cuando se selecciona el boton para editar una estacion
                 editarEstacionBtn.onclick = function () {
                     cancelarEdicionBtn.style.display = 'block';
                     actualizarNombreBtn.style.display = 'block';
@@ -205,6 +232,7 @@ export function generarPopup(latLng, nuevoMarcador, estacion, modal, google, map
                     editarEstacionBtn.style.display = 'none';
                 }
 
+                // Metodo que sejecuta cuando se desea inactivar una estacion
                 inactivarEstacionBtn.onclick = function () {
                     if (confirm(`¿Esta seguro que desea inactivar la estacion "${estacion['name']}"?. ¡Este cambio no puede deshacerse!`)) {
                         eliminarEstacion(estacion["id"]);
@@ -212,24 +240,22 @@ export function generarPopup(latLng, nuevoMarcador, estacion, modal, google, map
                 }
             }
 
-
-            // Optionally stop clicks, etc., from bubbling up to the map.
             CustomPopup.preventMapHitsAndGesturesFrom(this.containerDiv);
         }
 
-        /** Called when the popup is added to the map. */
+        // Este metodo se ejecuta cuando el popup se añade al mapa
         onAdd() {
             this.getPanes().floatPane.appendChild(this.containerDiv);
         }
 
-        /** Called when the popup is removed from the map. */
+        // Este metodo se ejecuta cuando el popup es removido del mapa
         onRemove() {
             if (this.containerDiv.parentElement) {
                 this.containerDiv.parentElement.removeChild(this.containerDiv);
             }
         }
 
-        /** Called each frame when the popup needs to draw itself. */
+        // Este metodo se ejecuta cuando el popup actualiza su informacion
         draw() {
             const divPosition = this.getProjection().fromLatLngToDivPixel(
                 this.position
@@ -250,6 +276,7 @@ export function generarPopup(latLng, nuevoMarcador, estacion, modal, google, map
             }
         }
 
+        // Metodo para generar la fecha con el formato correcto a peticion del cliente
         generarFecha(date) {
             const meses = [
                 "Enero",
@@ -287,14 +314,23 @@ export function generarPopup(latLng, nuevoMarcador, estacion, modal, google, map
         }
     }
 
+    // Se retorna una nueva instancia de la clase CustomPopup
     return new CustomPopup(latLng, nuevoMarcador, estacion, modal, google, modal)
 }
 
+
+// Metodo para extraer las estaciones y actualizar los datos en la vista
 export function extraerEstaciones(mapa, firebaseApp, axios, google, editarEstacionModal, animacion) {
     let usertoken;
+
+    // Se verifica si hay un usuario activo
     firebaseApp.app().auth().onAuthStateChanged((user) => {
         if (user) {
+
+            // Se extrae el token del usuario actual para realizar las peticiones al backend
             user.getIdToken(true).then((token) => {
+
+                // Variable que almacena la configuracion de la peticion al servidor backend
                 const config = {
                     method: 'get',
                     url: 'https://localhost:5001/Estaciones',
@@ -303,9 +339,14 @@ export function extraerEstaciones(mapa, firebaseApp, axios, google, editarEstaci
                     }
                 };
 
+                // Se realiza la peticion al servidor backend
                 axios(config)
                     .then(function (response) {
+
+                        // Se determina si la informacion con la que resopndio el servidor posee KPI o no
                         if (response.data["data"].length === 0) {
+
+                            // En caso de que no haya ninguna KPI ingresada en el sistema aun
                             $("#lista-KPI")
                                 .empty()
                                 .addClass("d-flex justify-content-center align-items-center")
@@ -317,60 +358,81 @@ export function extraerEstaciones(mapa, firebaseApp, axios, google, editarEstaci
                                 `
                                 )
                         } else {
+
+                            // Se recorre la lista antigua de marcadores y se eliminan del mapa
                             $(marcadores).each((index, marcador) => {
                                 marcador.setMap(null);
                             });
+
+                            // Se elimina el contenido actual de la vista de la lista de KPI
                             $("#lista-KPI").removeClass("d-flex justify-content-center align-items-center").empty();
+
+                            // Se recorre la lista de KPI devuelta por la peticion al servidor backend
                             $(response.data["data"]).each((index, estacion) => {
+
+                                // Se genera un car por cada KPI
                                 $("#lista-KPI").removeClass("d-flex justify-content-center align-items-center").append(
                                     generarEstacionCard(estacion)
                                 )
 
+                                // Se genera un marcador por cada KPI y se establece la posicion
                                 let marcador = generarMarcador(mapa, estacion["name"], google, animacion)
-
                                 marcador.setPosition(new google.maps.LatLng({
                                     lat: estacion["latitude"],
                                     lng: estacion["longitude"]
                                 }));
 
+                                // Se añade cada marcador al mapa
                                 marcador.setMap(mapa);
 
+                                // Se agrega un listener a cada marcador para el evento 'click'
                                 google.maps.event.addListener(marcador, "click", function (e) {
+
+                                    // Se determina si hay algun popup abierto y se cierra
                                     if (popup !== null) {
                                         popup.setMap(null);
                                         popup = null;
                                     }
+
+                                    // Se determina si hay algun marcador sin objetivo y se elimina del mapa
                                     if (nuevoMarcador !== null) {
                                         nuevoMarcador.setMap(null);
                                     }
-                                    popup = generarPopup(marcador.getPosition(), marcador, estacion, editarEstacionModal, google, mapa);
 
+                                    // Se genera un nuevo popup y se muestra en la vista del mapa
+                                    popup = generarPopup(marcador.getPosition(), marcador, estacion, editarEstacionModal, google, mapa);
                                     popup.setMap(mapa);
                                 });
 
+                                // Se agrega un listener al evento 'click' para cada card de KPI
                                 $(`#${estacion["id"]}`).click((e) => {
+
+                                    // Se genera una variable con la ubicacion del KPI seleccionado en el mapa
                                     const estacionGeoPoints = {
                                         lat: parseFloat(e.currentTarget.attributes[2].value),
                                         lng: parseFloat(e.currentTarget.attributes[1].value)
                                     }
 
-
+                                    // Se navega en el mapa hacia el KPI seleccioado
                                     mapa.panTo(estacionGeoPoints);
 
+                                    // Se determina si hay algun popup abierto y se cierra
                                     if (popup !== null) {
                                         popup.setMap(null);
                                         popup = null;
                                     }
 
+                                    // Se determina si hay algun marcador sin objetivo y se elimina del mapa
                                     if (nuevoMarcador !== null) {
                                         nuevoMarcador.setMap(null);
                                     }
 
+                                    // Se genera un nuevo popup y se muestra en la vista
                                     popup = generarPopup(mapa.getCenter(), marcador, estacion, editarEstacionModal, google, mapa);
-
                                     popup.setMap(mapa);
                                 });
 
+                                // Se añade cada marcador al arreglo global de marcadores
                                 marcadores.push(marcador);
                             });
                         }
@@ -383,6 +445,7 @@ export function extraerEstaciones(mapa, firebaseApp, axios, google, editarEstaci
                 usertoken = null;
             });
         } else {
+            // En caso de que no exista un usuario logueado
             console.error("Necesita estar logueado para ver este contenido.");
             location.replace('/index.html');
             usertoken = null;
@@ -390,30 +453,35 @@ export function extraerEstaciones(mapa, firebaseApp, axios, google, editarEstaci
     });
 }
 
+// Metodo que retorna el template para los cards de los KPI
 function generarEstacionCard(estacion) {
     return `
-    <li id="${estacion['id']}" longitud="${estacion['longitude']}" latitud="${estacion['latitude']}">
-                                <div class="shadow bg-light rounded KPI-Card p-2 mt-3">
-                                    <div class="titulo-dashboard mb-3"><h5 class="ml-3 text-dark">Estacion: ${estacion['name']}</h5></div>
-                                    <div class="row">
-                                        <div class="col-6 p-0 m-0 d-flex">
-                                            <div class="ml-3 d-flex justify-content-center align-items-center"><img
-                                                    src="../assets/img/custom-icons/rain.svg" alt="Rain Icon"
-                                                    class="card-rain-icon"></div>
-                                            <div class="d-block"><h5 class="text-dark d-block font-weight-bold ml-2 mb-0">
-                                                ${estacion['humedad']}%</h5>
-                                                <span class="text-dark d-block ml-2">Humedad</span></div>
-                                        </div>
-                                        <div class="col-6 p-0 m-0 d-flex">
-                                            <div class="d-flex justify-content-center align-items-center"><img
-                                                    src="../assets/img/custom-icons/temperature.svg" alt="Temperature Icon"
-                                                    class="card-temperature-icon"></div>
-                                            <div class="d-block"><h5 class="text-dark d-block font-weight-bold ml-2 mb-0">${estacion['temperatura']}
-                                                C°</h5>
-                                                <span class="text-dark d-block ml-2 text-break">Temperatura</span></div>
-                                        </div>
-                                    </div>
-                                </div>
-    </li>
+<li id="${estacion['id']}" longitud="${estacion['longitude']}" latitud="${estacion['latitude']}">
+    <div class="shadow bg-light rounded KPI-Card p-2 mt-3">
+        <div class="titulo-dashboard mb-3">
+            <h5 class="ml-3 text-dark">Estacion: ${estacion['name']}</h5>
+        </div>
+        <div class="row">
+            <div class="col-6 p-0 m-0 d-flex">
+                <div class="ml-3 d-flex justify-content-center align-items-center">
+                    <img src="../assets/img/custom-icons/rain.svg" alt="Rain Icon" class="card-rain-icon">
+                </div>
+                <div class="d-block">
+                    <h5 class="text-dark d-block font-weight-bold ml-2 mb-0">${estacion['humedad']}%</h5>
+                    <span class="text-dark d-block ml-2">Humedad</span>
+                </div>
+            </div>
+            <div class="col-6 p-0 m-0 d-flex">
+                <div class="d-flex justify-content-center align-items-center">
+                    <img src="../assets/img/custom-icons/temperature.svg" alt="Temperature Icon" class="card-temperature-icon">
+                </div>
+                <div class="d-block">
+                    <h5 class="text-dark d-block font-weight-bold ml-2 mb-0">${estacion['temperatura']}C°</h5>
+                    <span class="text-dark d-block ml-2 text-break">Temperatura</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</li>
     `;
 }

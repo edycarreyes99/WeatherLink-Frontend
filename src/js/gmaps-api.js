@@ -157,8 +157,8 @@ export function generarPopup(latLng, nuevoMarcador, estacion, modal, google, map
                     }
                 }
             } else {
-                this.nombreEstacionLabel = div.getElementsByClassName('title-estacion').item(0);
-                this.nombreEstacionLabel.innerHTML = estacion["name"];
+                let nombreEstacionLabel = div.getElementsByClassName('title-estacion').item(0);
+                nombreEstacionLabel.innerHTML = estacion["name"];
                 this.humedadLabel = div.getElementsByClassName('title-humedad').item(0);
                 this.humedadLabel.innerHTML = estacion['humedad'] + "% de humedad.";
                 this.temperaturaLabel = div.getElementsByClassName('title-temperatura').item(0);
@@ -166,6 +166,35 @@ export function generarPopup(latLng, nuevoMarcador, estacion, modal, google, map
                 this.fechaActualizacionLabel = div.getElementsByClassName('title-fecha-modificacion').item(0);
                 const date = new Date(estacion["updatedAt"]);
                 this.fechaActualizacionLabel.innerHTML = "Actualizado el " + this.generarFecha(date);
+                let editarNombreEstacionInput = div.getElementsByClassName('editarNombreEstacionInput').item(0);
+                let editarEstacionBtn = div.getElementsByClassName('editar-nombre-estacion-button').item(0);
+                let cancelarEdicionBtn = div.getElementsByClassName('cancelar-editar-nombre-estacion-button').item(0);
+                let actualizarNombreBtn = div.getElementsByClassName('actualizar-nombre-estacion-button').item(0);
+                cancelarEdicionBtn.onclick = function () {
+                    actualizarNombreBtn.style.display = 'none';
+                    editarEstacionBtn.style.display = 'block';
+                    nombreEstacionLabel.style.display = 'block';
+                    editarNombreEstacionInput.style.display = 'none';
+                    cancelarEdicionBtn.style.display = 'none';
+                }
+                actualizarNombreBtn.onclick = function () {
+                    cancelarEdicionBtn.style.display = 'none';
+                    editarEstacionBtn.style.display = 'block';
+                    editarNombreEstacionInput.style.display = 'none';
+                    nombreEstacionLabel.style.display = 'block';
+                    actualizarNombreBtn.style.display = 'none';
+                }
+                cancelarEdicionBtn.style.display = 'none';
+                actualizarNombreBtn.style.display = 'none';
+                editarNombreEstacionInput.style.display = 'none';
+                editarEstacionBtn.onclick = function () {
+                    cancelarEdicionBtn.style.display = 'block';
+                    actualizarNombreBtn.style.display = 'block';
+                    editarNombreEstacionInput.value = estacion["name"];
+                    editarNombreEstacionInput.style.display = 'block';
+                    nombreEstacionLabel.style.display = 'none';
+                    editarEstacionBtn.style.display = 'none';
+                }
             }
 
             // Optionally stop clicks, etc., from bubbling up to the map.

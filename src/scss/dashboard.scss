@@ -135,6 +135,10 @@
     margin-left: 1rem;
   }
 
+  .editarNombreEstacionInput {
+    margin-left: 1rem;
+  }
+
   .desc-estacion {
     font-size: 1rem;
     margin-left: 1rem;
@@ -156,6 +160,10 @@
 
   .latlngInput {
     max-width: 120px !important;
+  }
+
+  .info {
+    font-size: 1rem;
   }
 
   /* The popup bubble styling. */
@@ -206,6 +214,6 @@
     height: 0;
     position: absolute;
     /* The max width of the info window. */
-    width: 800px;
+    width: 800px !important;
   }
 }

@@ -1,37 +1,50 @@
 <div id="content">
     <div class="modal-title d-flex align-items-center mt-3 mb-2 ml-3 mr-3">
-        <img class="nube" src="../assets/img/custom-icons/rain.svg"
-             alt="Nube lloviendo logo" width="40">
+        <img class="nube" src="../../assets/img/icons/ICN_Estacion.png"
+             alt="Nube lloviendo logo" width="32">
         <h6 class="mb-0">
-            <span class="title-estacion text-dark d-block"></span>
+            <span class="title-estacion text-dark">Nombre de la estación</span>
+            <input class="form-control editarNombreEstacionInput" id="editarNombreEstacionInput"
+                   placeholder="Nombre estación" style="max-width: 150px !important;">
             <span class="desc-estacion text-info font-weight-light d-block">Estacion Climática</span>
         </h6>
+        <button class="ml-2 btn editar-nombre-estacion-button">
+            <img src="../../assets/img/icons/BTN_Editar.png" alt="Editar nombre estacion boton" width="32" height="32">
+        </button>
+        <button class="ml-2 btn btn-success actualizar-nombre-estacion-button">
+            <img src="../../assets/img/custom-icons/check.svg" alt="actualizar nombre estacion boton" width="15"
+                 height="15">
+        </button>
+        <button class="ml-2 btn btn-danger cancelar-editar-nombre-estacion-button">
+            <img src="../../assets/img/custom-icons/cross-white.svg" alt="cancelar edicion de nombre estacion boton"
+                 width="15" height="15">
+        </button>
         <button class="float-right ml-auto btn btn-light equis-cerrar-modal mt-n4">
-            <img src="../assets/img/custom-icons/cross.svg" alt="Equis icono" width="12">
+            <img src="../../assets/img/custom-icons/cross.svg" alt="Equis icono" width="12">
         </button>
     </div>
-    <div class="modal-body">
-        <form class="d-flex mt-4">
-            <div class="form-group d-flex m-0 p-0 align-items-center nombreEstacionFrmCtrl">
-                <span class="text-dark mr-2">Nombre</span>
-                <input class="form-control nombreEstacion" id="nombreEstacion" placeholder="Nombre estación">
+    <div class="modal-body d-flex align-items-center border-top">
+        <div class="row p-2">
+            <div class="col-4 d-flex p-0 align-items-center">
+                <img src="../../assets/img/icons/ICN_humedad.png" alt="Icono humedad" width="20" height="20">
+                <span class="title-humedad text-dark ml-1 info">70% de humedad</span>
             </div>
-            <div class="form-group d-flex m-0 p-0 align-items-center float-right ml-4 mr-3">
-                <span class="text-dark mr-2">Longitud</span>
-                <input type="number" readonly="readonly" class="form-control latlngInput lngInput" id="inputPassword"
-                       placeholder="Longitud">
+            <div class="col-4 d-flex p-0 align-items-center">
+                <img src="../../assets/img/icons/ICN_Temperatura.png" alt="Icono temperatura" width="40">
+                <span class="title-temperatura text-dark ml-1 info">33°C de temperatura</span>
             </div>
-            <div class="form-group d-flex m-0 p-0 align-items-center float-right">
-                <span class="text-dark mr-2">Latitud</span>
-                <input type="number" readonly="readonly" class="form-control latlngInput latInput" id="inputUsername"
-                       placeholder="Latitud">
+            <div class="col-4 d-flex p-0 align-items-center">
+                <img src="../../assets/img/icons/ICN_Fecha_actualizacion.png" alt="Icono fecha de actualizacion"
+                     width="40">
+                <span class="title-fecha-modificacion text-dark ml-1 info">Actualizado el 8 de Oct 8:37 am</span>
             </div>
-        </form>
+        </div>
     </div>
     <div class="modal-footer">
-        <div class="mx-auto">
-            <button type="button" class="btn btn-danger mr-2 btn-cancelar" data-dismiss="modal" id="cancelar-btn">Cancelar</button>
-            <button type="button" class="btn btn-success ml-2 btn-guardar" id="guardar-btn">Guardar</button>
+        <div class="float-right">
+            <button type="button" class="btn btn-danger mr-2 btn-inactivar" data-dismiss="modal" id="inactivar-btn">
+                Inactivar
+            </button>
         </div>
     </div>
 </div>

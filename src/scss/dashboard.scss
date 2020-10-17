@@ -1,3 +1,11 @@
+header {
+  .titulo-dashboard {
+    border-left-style: solid;
+    border-left-color: $light-green;
+    border-left-width: 5px;
+  }
+}
+
 .dashboard-page {
 
   ::-webkit-scrollbar {
@@ -16,12 +24,6 @@
     background-color: var(--black-transparent-20, $dark-grey) !important;
     -webkit-border-radius: 4px !important;
     border-radius: 4px !important;
-  }
-
-  .titulo-dashboard {
-    border-left-style: solid;
-    border-left-color: $light-green;
-    border-left-width: 5px;
   }
 
   .top-container {

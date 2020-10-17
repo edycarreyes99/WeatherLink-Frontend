@@ -36,6 +36,23 @@ export function actualizarEstacion(id, nuevoNombre) {
     realizarSolicitud(config, "actualizado");
 }
 
+export function eliminarEstacion(id) {
+    const data = {
+        id
+    };
+
+    let config = {
+        method: 'delete',
+        url: 'https://localhost:5001/EliminarEstacion/',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        data : data
+    };
+
+    realizarSolicitud(config, "eliminado");
+}
+
 function realizarSolicitud(config, tipoSolicitud) {
     firebaseApp.app().auth().onAuthStateChanged((user) => {
         if (user !== null) {

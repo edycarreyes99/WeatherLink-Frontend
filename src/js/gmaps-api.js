@@ -1,6 +1,6 @@
 let marcadores = [];
 
-import {actualizarEstacion, agregarEstacion} from "./weatherlink-api";
+import {actualizarEstacion, agregarEstacion, eliminarEstacion} from "./weatherlink-api";
 
 export function generarScriptParaGMaps(document) {
     const scriptTag = document.createElement('script');
@@ -170,6 +170,7 @@ export function generarPopup(latLng, nuevoMarcador, estacion, modal, google, map
                 let editarEstacionBtn = div.getElementsByClassName('editar-nombre-estacion-button').item(0);
                 let cancelarEdicionBtn = div.getElementsByClassName('cancelar-editar-nombre-estacion-button').item(0);
                 let actualizarNombreBtn = div.getElementsByClassName('actualizar-nombre-estacion-button').item(0);
+                let inactivarEstacionBtn = div.getElementsByClassName('inactivar-estacion-btn').item(0);
                 cancelarEdicionBtn.onclick = function () {
                     actualizarNombreBtn.style.display = 'none';
                     editarEstacionBtn.style.display = 'block';
@@ -203,7 +204,14 @@ export function generarPopup(latLng, nuevoMarcador, estacion, modal, google, map
                     nombreEstacionLabel.style.display = 'none';
                     editarEstacionBtn.style.display = 'none';
                 }
+
+                inactivarEstacionBtn.onclick = function () {
+                    if (confirm(`¿Esta seguro que desea inactivar la estacion "${estacion['name']}"?. ¡Este cambio no puede deshacerse!`)) {
+                        eliminarEstacion(estacion["id"]);
+                    }
+                }
             }
+
 
             // Optionally stop clicks, etc., from bubbling up to the map.
             CustomPopup.preventMapHitsAndGesturesFrom(this.containerDiv);

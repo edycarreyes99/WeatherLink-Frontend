@@ -3,10 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="0224f981-6350-4b0a-9406-e8c275c6f98a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/dashboard.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/js/gmaps-api.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/gmaps-api.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/modals/editar-estacion-modal.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/modals/editar-estacion-modal.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/modals/nueva-estacion-modal.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/modals/nueva-estacion-modal.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scss/dashboard.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/scss/dashboard.scss" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,8 +16,8 @@
       <list>
         <option value="CSS File" />
         <option value="SCSS File" />
-        <option value="JavaScript File" />
         <option value="HTML File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -122,7 +120,7 @@
       <workItem from="1602641196159" duration="18040000" />
       <workItem from="1602701715401" duration="32000" />
       <workItem from="1602701749573" duration="34273000" />
-      <workItem from="1602817572796" duration="22598000" />
+      <workItem from="1602817572796" duration="28923000" />
     </task>
     <servers />
   </component>
@@ -158,22 +156,22 @@
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="737" y="349" width="424" height="491" key="FileChooserDialogImpl/0.27.1920.1053@0.27.1920.1053" timestamp="1602734533956" />
-    <state width="1899" height="277" key="GridCell.Tab.0.bottom" timestamp="1602886182801">
+    <state width="1899" height="277" key="GridCell.Tab.0.bottom" timestamp="1602899604887">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state width="1899" height="277" key="GridCell.Tab.0.bottom/0.27.1920.1053@0.27.1920.1053" timestamp="1602886182801" />
-    <state width="1899" height="277" key="GridCell.Tab.0.center" timestamp="1602886182800">
+    <state width="1899" height="277" key="GridCell.Tab.0.bottom/0.27.1920.1053@0.27.1920.1053" timestamp="1602899604887" />
+    <state width="1899" height="277" key="GridCell.Tab.0.center" timestamp="1602899604886">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state width="1899" height="277" key="GridCell.Tab.0.center/0.27.1920.1053@0.27.1920.1053" timestamp="1602886182800" />
-    <state width="1899" height="277" key="GridCell.Tab.0.left" timestamp="1602886182799">
+    <state width="1899" height="277" key="GridCell.Tab.0.center/0.27.1920.1053@0.27.1920.1053" timestamp="1602899604886" />
+    <state width="1899" height="277" key="GridCell.Tab.0.left" timestamp="1602899604885">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state width="1899" height="277" key="GridCell.Tab.0.left/0.27.1920.1053@0.27.1920.1053" timestamp="1602886182799" />
-    <state width="1899" height="277" key="GridCell.Tab.0.right" timestamp="1602886182801">
+    <state width="1899" height="277" key="GridCell.Tab.0.left/0.27.1920.1053@0.27.1920.1053" timestamp="1602899604885" />
+    <state width="1899" height="277" key="GridCell.Tab.0.right" timestamp="1602899604886">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state width="1899" height="277" key="GridCell.Tab.0.right/0.27.1920.1053@0.27.1920.1053" timestamp="1602886182801" />
+    <state width="1899" height="277" key="GridCell.Tab.0.right/0.27.1920.1053@0.27.1920.1053" timestamp="1602899604886" />
     <state x="464" y="188" width="992" height="737" key="SettingsEditor" timestamp="1602542488455">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>

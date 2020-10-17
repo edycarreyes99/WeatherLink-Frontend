@@ -1,3 +1,5 @@
+import {agregarEstacion} from "./weatherlink-api";
+
 export function generarScriptParaGMaps(document) {
     const scriptTag = document.createElement('script');
     const apiKey = process.env.GOOGLE_MAPS_API_KEY;
@@ -32,7 +34,7 @@ export function inicializarMapa(google) {
     );
 }
 
-export function agregarEventoDeClickDerecho(mapa, google, nuevaEstacionModal) {
+export function agregarEventoDeClickDerecho(mapa, google, nuevaEstacionModal, axios) {
     let nuevoMarcador = null;
     let customPopup = null;
     google.maps.event.addListener(mapa, "rightclick", function (evento) {
@@ -47,7 +49,7 @@ export function agregarEventoDeClickDerecho(mapa, google, nuevaEstacionModal) {
             customPopup.setMap(null);
         }
 
-        customPopup = generarPopup(evento.latLng, nuevoMarcador, "nueva-estacion", nuevaEstacionModal, google);
+        customPopup = generarPopup(evento.latLng, nuevoMarcador, "nueva-estacion", nuevaEstacionModal, google, mapa);
         customPopup.setMap(mapa);
     });
 }
@@ -103,9 +105,9 @@ export function generarMarcador(mapa, nombre, google) {
     });
 }
 
-export function generarPopup(latLng, nuevoMarcador, estacion, nuevaEstacionModal, google) {
+export function generarPopup(latLng, nuevoMarcador, estacion, modal, google, mapa) {
     class CustomPopup extends google.maps.OverlayView {
-        constructor(position, marcador, estacion, contenido) {
+        constructor(position, marcador, estacion, contenido, google, modal) {
             super();
             this.estacion = estacion;
             this.contenido = contenido;
@@ -136,13 +138,22 @@ export function generarPopup(latLng, nuevoMarcador, estacion, nuevaEstacionModal
                     bubbleAnchor.style.display = 'none';
                     marcador.setMap(null);
                 }
-
-                this.nombreEstacionInput = div.getElementsByClassName('nombreEstacion').item(0);
-                this.nombreEstacionInput.value = "";
-                this.latitudInput = div.getElementsByClassName('latInput').item(0)
+                let nombreEstacionInput = div.getElementsByClassName('nombreEstacion').item(0);
+                console.log(nombreEstacionInput);
+                nombreEstacionInput.value = "";
+                this.latitudInput = div.getElementsByClassName('latInput').item(0);
                 this.latitudInput.value = position.lat().toString();
-                this.longitudInput = div.getElementsByClassName('lngInput').item(0)
+                this.longitudInput = div.getElementsByClassName('lngInput').item(0);
                 this.longitudInput.value = position.lng().toString();
+                this.guardarBtn = div.getElementsByClassName('btn-guardar').item(0);
+                this.guardarBtn.onclick = function () {
+                    const nombre = nombreEstacionInput.value;
+                    if (nombre.trim() === "") {
+                        alert("El nombre de la estacion no puede estar en blanco.")
+                    } else {
+                        agregarEstacion(nombreEstacionInput.value, position, mapa, google, modal);
+                    }
+                }
             } else {
                 this.nombreEstacionLabel = div.getElementsByClassName('title-estacion').item(0);
                 this.nombreEstacionLabel.innerHTML = estacion["name"];
@@ -229,7 +240,7 @@ export function generarPopup(latLng, nuevoMarcador, estacion, nuevaEstacionModal
         }
     }
 
-    return new CustomPopup(latLng, nuevoMarcador, estacion, nuevaEstacionModal)
+    return new CustomPopup(latLng, nuevoMarcador, estacion, modal, google, modal)
 }
 
 export function extraerEstaciones(mapa, firebaseApp, axios, google, editarEstacionModal) {
@@ -279,7 +290,7 @@ export function extraerEstaciones(mapa, firebaseApp, axios, google, editarEstaci
                                         popup.setMap(null);
                                         popup = null;
                                     }
-                                    popup = generarPopup(nuevoMarcador.getPosition(), nuevoMarcador, estacion, editarEstacionModal, google);
+                                    popup = generarPopup(nuevoMarcador.getPosition(), nuevoMarcador, estacion, editarEstacionModal, google, mapa);
 
                                     popup.setMap(mapa);
                                 });

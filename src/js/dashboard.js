@@ -51,7 +51,7 @@ window.initMap = function () {
 
     const mapa = inicializarMapa(google);
 
-    agregarEventoDeClickDerecho(mapa, google, nuevaEstacionModal);
+    agregarEventoDeClickDerecho(mapa, google, nuevaEstacionModal, axios);
 
     agregarBotonDeCurrentLocation(mapa);
 

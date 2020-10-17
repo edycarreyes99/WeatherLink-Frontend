@@ -1,6 +1,5 @@
 const axios = require("axios");
 import {firebaseApp} from "./index";
-import {extraerEstaciones} from "./gmaps-api";
 
 export function agregarEstacion(nombre, posicion, mapa, modal) {
     const data = {
@@ -28,8 +27,8 @@ function realizarSolicitud(config, mapa, google, modal) {
                 axios(config)
                     .then(function (response) {
                         console.log(JSON.stringify(response.data));
-                        extraerEstaciones(mapa, firebaseApp, axios, google, modal);
-                        alert("La estacion ", config["data"]["nombre"], " se ha guardado correctamente.");
+                        alert("La estacion " + config["data"]["nombre"] + " se ha guardado correctamente.");
+                        location.reload();
                     })
                     .catch(function (error) {
                         console.log(error);

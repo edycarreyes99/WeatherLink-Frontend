@@ -55,7 +55,20 @@ window.initMap = function () {
 
     agregarBotonDeCurrentLocation(mapa);
 
-    extraerEstaciones(mapa, firebaseApp, axios, google, editarEstacionModal);
+    extraerEstaciones(mapa, firebaseApp, axios, google, editarEstacionModal, 1);
+
+    localStorage.setItem("ultima-actualizacion-kpi", new Date())
+
+    // Verificador para determinar si de sebe consumir la API para actualizar los KPI o no cada 5 minutos
+    setInterval(() => {
+        let lastDate = new Date(localStorage.getItem("ultima-actualizacion-kpi"))
+        if (lastDate.getMinutes() + 5 < new Date().getMinutes()) {
+            console.log("Extrayendo estaciones");
+            extraerEstaciones(mapa, firebaseApp, axios, google, editarEstacionModal, null);
+            localStorage.setItem("ultima-actualizacion-kpi", new Date())
+            console.log(localStorage.getItem("ultima-actualizacion"))
+        }
+    }, 5000);
 }
 
 // Se inicializa el grafico para la temperatura

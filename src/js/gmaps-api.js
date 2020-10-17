@@ -1,3 +1,5 @@
+let marcadores = [];
+
 import {agregarEstacion} from "./weatherlink-api";
 
 export function generarScriptParaGMaps(document) {
@@ -41,7 +43,7 @@ export function agregarEventoDeClickDerecho(mapa, google, nuevaEstacionModal, ax
         if (nuevoMarcador !== null) {
             nuevoMarcador.setMap(null);
         }
-        nuevoMarcador = generarMarcador(mapa, "Nueva estación", google);
+        nuevoMarcador = generarMarcador(mapa, "Nueva estación", google, 1);
 
         nuevoMarcador.setPosition(evento.latLng);
 
@@ -96,10 +98,10 @@ export function agregarBotonDeCurrentLocation(mapa) {
     mapa.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(controlDiv);
 }
 
-export function generarMarcador(mapa, nombre, google) {
+export function generarMarcador(mapa, nombre, google, animacion) {
     return new google.maps.Marker({
         map: mapa,
-        animation: google.maps.Animation.DROP,
+        animation: animacion !== null ? google.maps.Animation.DROP : 0,
         icon: "../assets/img/icons/ICN_Pin.png",
         name: nombre,
     });
@@ -243,7 +245,7 @@ export function generarPopup(latLng, nuevoMarcador, estacion, modal, google, map
     return new CustomPopup(latLng, nuevoMarcador, estacion, modal, google, modal)
 }
 
-export function extraerEstaciones(mapa, firebaseApp, axios, google, editarEstacionModal) {
+export function extraerEstaciones(mapa, firebaseApp, axios, google, editarEstacionModal, animacion) {
     let usertoken;
     firebaseApp.app().auth().onAuthStateChanged((user) => {
         if (user) {
@@ -270,13 +272,17 @@ export function extraerEstaciones(mapa, firebaseApp, axios, google, editarEstaci
                                 `
                                 )
                         } else {
+                            $(marcadores).each((index, marcador) => {
+                                marcador.setMap(null);
+                            });
+                            $("#lista-KPI").removeClass("d-flex justify-content-center align-items-center").empty();
                             $(response.data["data"]).each((index, estacion) => {
                                 $("#lista-KPI").removeClass("d-flex justify-content-center align-items-center").append(
                                     generarEstacionCard(estacion)
                                 )
                                 let popup = null;
 
-                                let nuevoMarcador = generarMarcador(mapa, estacion["name"], google)
+                                let nuevoMarcador = generarMarcador(mapa, estacion["name"], google, animacion)
 
                                 nuevoMarcador.setPosition(new google.maps.LatLng({
                                     lat: estacion["latitude"],
@@ -295,9 +301,16 @@ export function extraerEstaciones(mapa, firebaseApp, axios, google, editarEstaci
                                     popup.setMap(mapa);
                                 });
 
-                                $(`#${estacion["id"]}`).click(() => {
-
+                                $(`#${estacion["id"]}`).click((e) => {
+                                    const estacionGeoPoints = {
+                                        lat: parseFloat(e.currentTarget.attributes[2].value),
+                                        lng: parseFloat(e.currentTarget.attributes[1].value)
+                                    }
+                                    mapa.panTo(estacionGeoPoints);
+                                    console.log(e.currentTarget.attributes[1].value, e.currentTarget.attributes[2].value);
                                 });
+
+                                marcadores.push(nuevoMarcador);
                             });
                         }
                     })
@@ -318,7 +331,7 @@ export function extraerEstaciones(mapa, firebaseApp, axios, google, editarEstaci
 
 function generarEstacionCard(estacion) {
     return `
-    <li id="${estacion['id']}">
+    <li id="${estacion['id']}" longitud="${estacion['longitude']}" latitud="${estacion['latitude']}">
                                 <div class="shadow bg-light rounded KPI-Card p-2 mt-3">
                                     <div class="titulo-dashboard mb-3"><h5 class="ml-3 text-dark">Estacion: ${estacion['name']}</h5></div>
                                     <div class="row">

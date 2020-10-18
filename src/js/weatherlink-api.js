@@ -36,9 +36,9 @@ export function actualizarEstacion(id, nuevoNombre) {
     realizarSolicitud(config, "actualizado");
 }
 
-export function eliminarEstacion(id) {
+export function eliminarEstacion(id, nombre) {
     const data = {
-        id
+        id,
     };
 
     let config = {
@@ -61,7 +61,7 @@ function realizarSolicitud(config, tipoSolicitud) {
                 axios(config)
                     .then(function (response) {
                         console.log(JSON.stringify(response.data));
-                        alert("La estacion " + config["data"]["nombre"] + " se ha " + tipoSolicitud + "correctamente.");
+                        alert("La estacion " + config["data"]["nombre"] + " se ha " + tipoSolicitud + " correctamente.");
                         location.reload();
                     })
                     .catch(function (error) {

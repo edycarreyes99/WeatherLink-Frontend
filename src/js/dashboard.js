@@ -69,7 +69,7 @@ window.initMap = function () {
 
     localStorage.setItem("ultima-actualizacion-kpi", new Date())
 
-    generarGraficoTemperatura();
+    generarGraficos(usertoken);
 
     // Verificador para determinar si de sebe consumir la API para actualizar los KPI o no cada 5 minutos
     setInterval(() => {
@@ -83,71 +83,25 @@ window.initMap = function () {
     }, 5000);
 }
 
-// Metodo para generar el grafico de la temperatura
-function generarGraficoTemperatura() {
+// Metodo para generar los graficos de temperatura y humedad
+function generarGraficos(usertoken) {
     firebaseApp.app().auth().onAuthStateChanged((user) => {
         if (user) {
             user.getIdToken(true).then((token) => {
                 const config = {
                     method: 'get',
-                    url: 'https://localhost:5001/GenerarDatosParaGraficoDeTemperaturas/',
+                    url: 'https://localhost:5001/GenerarDatosParaGraficos/',
                     headers: {
                         'Authorization': 'Bearer ' + token
                     }
                 };
-
                 axios(config)
                     .then(function (response) {
-                        const series = response.data['data']['series'];
+                        const seriesHumedad = response.data['data']['seriesHumedad'];
+                        const seriesTemperatura = response.data['data']['seriesTemperatura'];
                         const categories = response.data['data']['categories']
-                        // Se inicializa el grafico para la temperatura
-                        Highcharts.chart('grafico-temperatura', {
-                            loading:{
-                                hideDuration: 100,
-                                showDuration: 100
-                            },
-                            chart: {
-                                type: 'column',
-                            },
-                            exporting: {
-                                enabled: false
-                            },
-                            title: {
-                                text: 'Pronóstico de Temperatura °C',
-                                align: 'left',
-                                style: {
-                                    color: '#40B8F0'
-                                }
-                            },
-                            yAxis: {
-                                min: 0,
-                                max: 40,
-                                title: ""
-                            },
-                            xAxis: {
-                                categories,
-                                crosshair: true
-                            },
-                            legend: {
-                                layout: "horizontal",
-                                align: "right",
-                                verticalAlign: "top",
-                                squareSymbol: true,
-                                symbolRadius: 0,
-                            },
-                            tooltip: {
-                                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                                    '<td style="padding:0"><b>{point.y:.1f}°C de temperatura.</b></td></tr>',
-                                footerFormat: '</table>',
-                                shared: true,
-                                useHTML: true
-                            },
-                            series,
-                            credits: {
-                                enabled: false
-                            }
-                        });
+                        generarGraficoTemperatura(categories, seriesTemperatura);
+                        generarGraficoHumedad(categories, seriesHumedad)
                     })
                     .catch(function (error) {
                         console.log(error);
@@ -163,91 +117,119 @@ function generarGraficoTemperatura() {
     });
 }
 
-// Se inicializa el grafico para la humedad
-Highcharts.chart('grafico-humedad', {
-
-    title: {
-        text: 'Pronóstico de Humedad %',
-        align: 'left',
-        style: {
-            color: '#40B8F0'
-        }
-    },
-    exporting: {
-        enabled: false
-    },
-    chart: {
-        events: {
-            load: function () {
-                $(".highcharts-legend-item path").attr('stroke-width', 10);
-            },
-            redraw: function () {
-                $(".highcharts-legend-item path").attr('stroke-width', 10);
-            }
-        }
-    },
-    yAxis: {
-        min: 0,
+// Metodo para generar el grafico de la temperatura
+function generarGraficoTemperatura(categories, series) {
+    // Se inicializa el grafico para la temperatura
+    Highcharts.chart('grafico-temperatura', {
+        loading: {
+            hideDuration: 100,
+            showDuration: 100
+        },
+        chart: {
+            type: 'column',
+        },
+        exporting: {
+            enabled: false
+        },
         title: {
-            text: ''
-        },
-        alternateGridColor: '#EAF6FA'
-    },
-    xAxis: {
-        categories: [
-            new Date(),
-            new Date(),
-            new Date(),
-            new Date(),
-            new Date()
-        ],
-        crosshair: true
-    },
-    legend: {
-        layout: "horizontal",
-        align: "right",
-        verticalAlign: "top",
-        squareSymbol: true,
-    },
-    plotOptions: {
-        series: {
-            marker: {
-                enabled: false
+            text: 'Pronóstico de Temperatura °C',
+            align: 'left',
+            style: {
+                color: '#40B8F0'
             }
+        },
+        yAxis: {
+            min: 0,
+            max: 40,
+            title: ""
+        },
+        xAxis: {
+            categories,
+            crosshair: true
+        },
+        legend: {
+            layout: "horizontal",
+            align: "right",
+            verticalAlign: "top",
+            squareSymbol: true,
+            symbolRadius: 0,
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.1f}°C de temperatura.</b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
+        },
+        series,
+        credits: {
+            enabled: false
         }
-    },
-    tooltip: {
-        headerFormat: `<span style="font-size:10px">{point.key}</span><table>`,
-        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-            '<td style="padding:0"><b>{point.y:.1f}% de humedad.</b></td></tr>',
-        footerFormat: '</table>',
-        shared: true,
-        useHTML: true
-    },
-    series: [
-        {
-            name: 'Estacion 1',
-            data: [20, 30, 70, 80, 97]
-        },
-        {
-            name: 'Estacion 2',
-            data: [24916, 24064, 29742, 29851, 32490]
-        },
-        {
-            name: 'Estacion 3',
-            data: [11744, 17722, 16005, 19771, 20185]
-        },
-        {
-            name: 'Estacion 4',
-            data: [null, null, 7988, 12169, 15112]
-        },
-        {
-            name: 'Estacion 5',
-            data: [12908, 5948, 8105, 11248, 8989]
-        },
-    ],
-    credits: {
-        enabled: false
-    }
+    });
+}
 
-});
+// Metodo para generar el grafico de la humedad
+function generarGraficoHumedad(categories, series) {
+    // Se inicializa el grafico para la humedad
+    Highcharts.chart('grafico-humedad', {
+
+        title: {
+            text: 'Pronóstico de Humedad %',
+            align: 'left',
+            style: {
+                color: '#40B8F0'
+            }
+        },
+        exporting: {
+            enabled: false
+        },
+        chart: {
+            events: {
+                load: function () {
+                    $(".highcharts-legend-item path").attr('stroke-width', 10);
+                },
+                redraw: function () {
+                    $(".highcharts-legend-item path").attr('stroke-width', 10);
+                }
+            }
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: ''
+            },
+            alternateGridColor: '#EAF6FA'
+        },
+        xAxis: {
+            categories,
+            crosshair: true
+        },
+        legend: {
+            layout: "horizontal",
+            align: "right",
+            verticalAlign: "top",
+            squareSymbol: true,
+        },
+        plotOptions: {
+            series: {
+                marker: {
+                    enabled: false
+                }
+            }
+        },
+        tooltip: {
+            headerFormat: `<span style="font-size:10px">{point.key}</span><table>`,
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.1f}% de humedad.</b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
+        },
+        series,
+        credits: {
+            enabled: false
+        }
+
+    });
+}

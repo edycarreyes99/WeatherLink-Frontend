@@ -64,9 +64,13 @@ export function agregarEventoDeClickDerecho(mapa, google, nuevaEstacionModal, ax
             popup.setMap(null);
         }
 
-        // Se genera un nuevo popup y se muestra en la vista del mapa
-        popup = generarPopup(evento.latLng, nuevoMarcador, "nueva-estacion", nuevaEstacionModal, google, mapa);
-        popup.setMap(mapa);
+        fetch('/nueva-estacion-modal.html')
+            .then(response => response.text())
+            .then(data => {
+                // Se genera un nuevo popup y se muestra en la vista del mapa
+                popup = generarPopup(evento.latLng, nuevoMarcador, "nueva-estacion", data, google, mapa);
+                popup.setMap(mapa);
+            });
     });
 }
 
@@ -128,6 +132,7 @@ export function generarPopup(latLng, nuevoMarcador, estacion, modal, google, map
     class CustomPopup extends google.maps.OverlayView {
         constructor(position, marcador, estacion, contenido, google, modal) {
             super();
+            console.log(modal);
             this.estacion = estacion;
             this.contenido = contenido;
             this.position = position;
@@ -140,10 +145,10 @@ export function generarPopup(latLng, nuevoMarcador, estacion, modal, google, map
             this.containerDiv = document.createElement("div");
             this.containerDiv.classList.add("popup-container");
             this.containerDiv.appendChild(bubbleAnchor);
-            this.equisCerrarModal = div.getElementsByClassName('equis-cerrar-modal').item(0);
+            let equisCerrarModal = div.getElementsByClassName('equis-cerrar-modal').item(0);
 
             // Evento para cerrar el popup
-            this.equisCerrarModal.onclick = function () {
+            equisCerrarModal.onclick = function () {
                 div.style.display = 'none';
                 bubbleAnchor.style.display = 'none';
                 if (estacion === "nueva-estacion") {
@@ -235,7 +240,7 @@ export function generarPopup(latLng, nuevoMarcador, estacion, modal, google, map
                 // Metodo que sejecuta cuando se desea inactivar una estacion
                 inactivarEstacionBtn.onclick = function () {
                     if (confirm(`¿Esta seguro que desea inactivar la estacion "${estacion['name']}"?. ¡Este cambio no puede deshacerse!`)) {
-                        eliminarEstacion(estacion["id"]);
+                        eliminarEstacion(estacion["id"], estacion['name']);
                     }
                 }
             }
@@ -399,9 +404,13 @@ export function extraerEstaciones(mapa, firebaseApp, axios, google, editarEstaci
                                         nuevoMarcador.setMap(null);
                                     }
 
-                                    // Se genera un nuevo popup y se muestra en la vista del mapa
-                                    popup = generarPopup(marcador.getPosition(), marcador, estacion, editarEstacionModal, google, mapa);
-                                    popup.setMap(mapa);
+                                    fetch('/editar-estacion-modal.html')
+                                        .then(response => response.text())
+                                        .then(data => {
+                                            // Se genera un nuevo popup y se muestra en la vista del mapa
+                                            popup = generarPopup(marcador.getPosition(), marcador, estacion, data, google, mapa);
+                                            popup.setMap(mapa);
+                                        });
                                 });
 
                                 // Se agrega un listener al evento 'click' para cada card de KPI
@@ -427,9 +436,13 @@ export function extraerEstaciones(mapa, firebaseApp, axios, google, editarEstaci
                                         nuevoMarcador.setMap(null);
                                     }
 
-                                    // Se genera un nuevo popup y se muestra en la vista
-                                    popup = generarPopup(mapa.getCenter(), marcador, estacion, editarEstacionModal, google, mapa);
-                                    popup.setMap(mapa);
+                                    fetch('/editar-estacion-modal.html')
+                                        .then(response => response.text())
+                                        .then(data => {
+                                            // Se genera un nuevo popup y se muestra en la vista
+                                            popup = generarPopup(mapa.getCenter(), marcador, estacion, data, google, mapa);
+                                            popup.setMap(mapa);
+                                        });
                                 });
 
                                 // Se añade cada marcador al arreglo global de marcadores
